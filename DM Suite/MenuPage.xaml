@@ -19,7 +19,10 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
+        <TextBlock Grid.Row="0" Grid.Column="0" x:Uid="Heading_Menu" FontSize="24" Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="1" Grid.Column="0">
+           <!--#region Button Bar -->
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
             <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8E5;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
@@ -44,10 +47,30 @@
                     <TextBlock x:Uid="Generic_Clear"/>
                 </StackPanel>
             </Button>
-        </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
-            <TextBlock />
-            <Custom:DataGrid Name="MenuDisplay" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" IsEnabled="False">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8B6;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                        <TextBlock x:Uid="Generic_Import"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <!--#endregion-->
+            <TextBlock x:Uid="Menu_Current" FontSize="20" Margin="0,0,0,10"/>
+            <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" Height="300" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="50">
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="AddToCurrentMenu">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE971;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                        <TextBlock x:Uid="Menu_Add"/>
+                    </StackPanel>
+                </Button>
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="RemoveFromCurrentMenu">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE972;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                        <TextBlock x:Uid="Menu_Remove"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="0">
             <TextBlock x:Uid="Heading_Search" FontSize="20" Margin="0,0,0,10"/>

@@ -7,6 +7,7 @@ using Windows.ApplicationModel.Resources;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.UI.Popups;
 using System;
+using System.Linq;
 
 namespace DM_Suite
 {
@@ -20,9 +21,11 @@ namespace DM_Suite
             InitializeComponent();
             OptionsAllCheckBox.IsChecked = true;
             SearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
+            CurrentMenu.ItemsSource = currentMenu; // Give it a blank list to get the headers to show.
         }
 
         private ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView();
+        private List<MenuItem> currentMenu = new List<MenuItem>();
 
         private bool IsSearchValid()
         {
@@ -182,6 +185,8 @@ namespace DM_Suite
             }
         }
 
+        #region Checkbox toggle Stuff
+
         private void SelectAll_Checked(object sender, RoutedEventArgs e)
         {
             FoodCheckBox.IsChecked = DrinkCheckBox.IsChecked = TreatCheckBox.IsChecked = true;
@@ -245,6 +250,69 @@ namespace DM_Suite
         {
             SetCheckedState();
         }
+
+        #endregion
+
+        private async void AddToCurrentMenu(object sender, RoutedEventArgs e)
+        {
+            List<MenuItem> selectedSearchResults = SearchResults.SelectedItems.Cast<MenuItem>().ToList();
+            bool showError = false;
+
+            if (selectedSearchResults.Count > 0)
+            {
+                SearchResults.SelectedItems.Clear();
+                foreach (MenuItem item in selectedSearchResults)
+                {
+                    if (!currentMenu.Contains(item))
+                    {
+                        currentMenu.Add(item);
+                    }
+                    else
+                    {
+                        showError = true;
+                    }
+                }
+            }
+
+            if (showError)
+            {
+                string errorText = resourceLoader.GetString("Errors_MenuAddToCurrent");
+                MessageDialog errorMessage = new MessageDialog(errorText);
+                await errorMessage.ShowAsync();
+            }
+
+            CurrentMenu.ItemsSource = null;
+            CurrentMenu.ItemsSource = currentMenu;
+        }
+
+        private async void RemoveFromCurrentMenu(object sender, RoutedEventArgs e)
+        {
+            List<MenuItem> selectedCurrentMenuItems = CurrentMenu.SelectedItems.Cast<MenuItem>().ToList();
+            bool showError = false;
+
+            if (selectedCurrentMenuItems.Count > 0)
+            {
+                foreach (MenuItem item in selectedCurrentMenuItems)
+                {
+                    currentMenu.Remove(item);
+                }
+            }
+            else
+            {
+                showError = true;
+            }
+
+            if (showError)
+            {
+                string errorText = resourceLoader.GetString("Errors_MenuRemoveFromCurrent");
+                MessageDialog errorMessage = new MessageDialog(errorText);
+                await errorMessage.ShowAsync();
+            }
+
+            CurrentMenu.ItemsSource = null;
+            CurrentMenu.ItemsSource = currentMenu;
+        }
+
     }
 }
 
