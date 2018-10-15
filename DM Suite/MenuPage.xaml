@@ -1,0 +1,87 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Custom="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:extensions="using:Microsoft.Toolkit.Uwp.UI.Extensions"
+    x:Class="DM_Suite.MenuPage"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
+            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8E5;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <TextBlock x:Uid="Generic_Load"/>
+                </StackPanel>
+            </Button>
+            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <TextBlock x:Uid="Generic_Save"/>
+                </StackPanel>
+            </Button>
+            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE734;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <TextBlock x:Uid="Generic_Generate"/>
+                </StackPanel>
+            </Button>
+            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE894;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <TextBlock x:Uid="Generic_Clear"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
+            <TextBlock />
+            <Custom:DataGrid Name="MenuDisplay" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="0">
+            <TextBlock x:Uid="Heading_Search" FontSize="20" Margin="0,0,0,10"/>
+            <Grid Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" BorderThickness="2" BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}" Padding="10,10,10,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0">
+                    <CheckBox x:Name="OptionsAllCheckBox" x:Uid="Generic_SelectAll" IsThreeState="True" Checked="SelectAll_Checked" Unchecked="SelectAll_Unchecked" Indeterminate="SelectAll_Indeterminate"/>
+                    <CheckBox x:Name="FoodCheckBox" x:Uid="Menu_Food" Margin="24,0,0,0" Checked="Option_Checked" Unchecked="Option_Unchecked"/>
+                    <CheckBox x:Name="DrinkCheckBox" x:Uid="Menu_Drink" Margin="24,0,0,0" Checked="Option_Checked" Unchecked="Option_Unchecked" />
+                    <CheckBox x:Name="TreatCheckBox" x:Uid="Menu_Treat" Margin="24,0,0,0" Checked="Option_Checked" Unchecked="Option_Unchecked"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Column="1">
+                    <TextBlock x:Uid="Menu_SearchDescription" TextWrapping="WrapWholeWords" Margin="0, 0, 0, 5"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="Input_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False"/>
+                        <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExecuteSearch">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                        <TextBlock x:Uid="Menu_MinGold" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                        <TextBox x:Name="CostMin" Width="20" x:Uid="Generic_Min" Margin="5,0,10,0" extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Normal" />
+                        <TextBlock x:Uid="Menu_MaxGold" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                        <TextBox x:Name="CostMax" Width="20" x:Uid="Generic_Max" Margin="5,0,10,0" extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Normal"/>
+                        <TextBlock x:Name="ResultsCount" Visibility="Collapsed" Margin="55,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource CheckBoxContentDisabledForegroundThemeBrush}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Custom:DataGrid Name="SearchResults" VerticalScrollBarVisibility="Auto" Height="300" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
+        </StackPanel>
+    </Grid>
+</Page>
