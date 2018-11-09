@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DBHelper.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="Secondary.xaml.cs">
       <DependentUpon>Secondary.xaml</DependentUpon>

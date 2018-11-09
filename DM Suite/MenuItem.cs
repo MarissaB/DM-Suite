@@ -15,6 +15,8 @@ namespace DM_Suite
         public decimal Cost { get; set; }
         public string Type { get; set; }
 
+        public MenuItem() { }
+
         public MenuItem(SqliteDataReader query)
         {
             if (query.FieldCount == 5)

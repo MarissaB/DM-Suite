@@ -8,6 +8,9 @@ using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.UI.Popups;
 using System;
 using System.Linq;
+using System.Xml.Serialization;
+using System.IO;
+using System.Xml;
 
 namespace DM_Suite
 {
@@ -19,13 +22,18 @@ namespace DM_Suite
         public MenuPage()
         {
             InitializeComponent();
+
+            currentMenu.Name = "Untitled New Menu";
+            currentMenu.Location = "Test location";
+
             OptionsAllCheckBox.IsChecked = true;
             SearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
-            CurrentMenu.ItemsSource = currentMenu; // Give it a blank list to get the headers to show.
+            CurrentHeader.Text += ": " + currentMenu.Name;
+            CurrentMenu.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
         }
 
+        private Menu currentMenu = new Menu();
         private ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView();
-        private List<MenuItem> currentMenu = new List<MenuItem>();
 
         private bool IsSearchValid()
         {
@@ -256,53 +264,34 @@ namespace DM_Suite
         private async void AddToCurrentMenu(object sender, RoutedEventArgs e)
         {
             List<MenuItem> selectedSearchResults = SearchResults.SelectedItems.Cast<MenuItem>().ToList();
-            bool showError = false;
 
             if (selectedSearchResults.Count > 0)
             {
                 SearchResults.SelectedItems.Clear();
-                foreach (MenuItem item in selectedSearchResults)
-                {
-                    if (!currentMenu.Contains(item))
-                    {
-                        currentMenu.Add(item);
-                    }
-                    else
-                    {
-                        showError = true;
-                    }
-                }
-            }
 
-            if (showError)
-            {
-                string errorText = resourceLoader.GetString("Errors_MenuAddToCurrent");
-                MessageDialog errorMessage = new MessageDialog(errorText);
-                await errorMessage.ShowAsync();
+                if (currentMenu.DoesMenuContainDuplicates(selectedSearchResults))
+                {
+                    string errorText = resourceLoader.GetString("Errors_MenuAddToCurrent");
+                    MessageDialog errorMessage = new MessageDialog(errorText);
+                    await errorMessage.ShowAsync();
+                }
+
+                currentMenu.AddMenuItems(selectedSearchResults);
             }
 
             CurrentMenu.ItemsSource = null;
-            CurrentMenu.ItemsSource = currentMenu;
+            CurrentMenu.ItemsSource = currentMenu.MenuItems;
         }
 
         private async void RemoveFromCurrentMenu(object sender, RoutedEventArgs e)
         {
             List<MenuItem> selectedCurrentMenuItems = CurrentMenu.SelectedItems.Cast<MenuItem>().ToList();
-            bool showError = false;
 
             if (selectedCurrentMenuItems.Count > 0)
             {
-                foreach (MenuItem item in selectedCurrentMenuItems)
-                {
-                    currentMenu.Remove(item);
-                }
+                currentMenu.RemoveMenuItems(selectedCurrentMenuItems);
             }
             else
-            {
-                showError = true;
-            }
-
-            if (showError)
             {
                 string errorText = resourceLoader.GetString("Errors_MenuRemoveFromCurrent");
                 MessageDialog errorMessage = new MessageDialog(errorText);
@@ -310,7 +299,12 @@ namespace DM_Suite
             }
 
             CurrentMenu.ItemsSource = null;
-            CurrentMenu.ItemsSource = currentMenu;
+            CurrentMenu.ItemsSource = currentMenu.MenuItems;
+        }
+
+        private void SaveCurrentMenu(object sender, RoutedEventArgs e)
+        {
+            string xml = currentMenu.ExportMenuToXML();
         }
 
     }

@@ -10,17 +10,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10,0,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" x:Uid="Heading_Menu" FontSize="24" Margin="0,0,0,10"/>
-        <StackPanel Grid.Row="1" Grid.Column="0">
+        <TextBlock Grid.Row="0" x:Uid="Heading_Menu" FontSize="24" Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="1">
            <!--#region Button Bar -->
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
             <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
@@ -29,7 +25,7 @@
                     <TextBlock x:Uid="Generic_Load"/>
                 </StackPanel>
             </Button>
-            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
+            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="SaveCurrentMenu">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
                     <TextBlock x:Uid="Generic_Save"/>
@@ -55,7 +51,7 @@
                 </Button>
             </StackPanel>
             <!--#endregion-->
-            <TextBlock x:Uid="Menu_Current" FontSize="20" Margin="0,0,0,10"/>
+            <TextBlock x:Name="CurrentHeader" x:Uid="Menu_Current" FontSize="20" Margin="0,0,0,10"/>
             <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" Height="300" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="50">
                 <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="AddToCurrentMenu">
@@ -72,7 +68,7 @@
                 </Button>
             </StackPanel>
         </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="0">
+        <StackPanel Grid.Row="2">
             <TextBlock x:Uid="Heading_Search" FontSize="20" Margin="0,0,0,10"/>
             <Grid Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" BorderThickness="2" BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}" Padding="10,10,10,10">
                 <Grid.ColumnDefinitions>
