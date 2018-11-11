@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,8 @@ namespace DM_Suite
         public List<MenuItem> MenuItems { get; } = new List<MenuItem>();
 
         public Menu() { }
+
+
 
         public void AddMenuItems(List<MenuItem> itemsToAdd)
         {
@@ -70,6 +73,55 @@ namespace DM_Suite
                 }
             }
             return xml;
+        }
+
+        public string ExportMenuItemsToXML()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<MenuItem>));
+            string xml = "";
+
+            using (StringWriter stringWriter = new StringWriter())
+            {
+                using (XmlTextWriter writer = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented })
+                {
+                    serializer.Serialize(writer, this.MenuItems);
+                    xml = stringWriter.ToString(); // Your XML
+                }
+            }
+            return xml;
+        }
+
+        public static Menu BuildFromXML(string xml)
+        {
+            // TODO: Validate that the incoming xml string is a valid serialized menu
+            XmlSerializer serializer = new XmlSerializer(typeof(Menu));
+            Menu menu = new Menu();
+
+            using (TextReader reader = new StringReader(xml))
+            {
+                try
+                {
+                    menu = (Menu)serializer.Deserialize(reader);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Building menu from XML failed! " + ex);
+                }
+            }
+            return menu;
+        }
+
+        public static bool IsMenuValid(Menu menu)
+        {
+            bool isValid = false;
+
+            // Check for an empty name and null list of menu items
+            if (!string.IsNullOrEmpty(menu.Name) && menu.MenuItems != null)
+            {
+                isValid = true;
+            }
+
+            return isValid;
         }
     }
 }

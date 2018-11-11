@@ -135,6 +135,9 @@
   <data name="Generic_Create.Text" xml:space="preserve">
     <value>Create</value>
   </data>
+  <data name="Generic_Export.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
   <data name="Generic_Generate.Text" xml:space="preserve">
     <value>Generate</value>
   </data>
@@ -178,7 +181,7 @@
     <value>Cost</value>
   </data>
   <data name="Menu_Current.Text" xml:space="preserve">
-    <value>Current Menu</value>
+    <value>Current Menu: </value>
   </data>
   <data name="Menu_Description" xml:space="preserve">
     <value>Description</value>

@@ -5,6 +5,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Data.Sqlite;
+using System.Diagnostics;
 
 namespace DM_Suite
 {
@@ -32,7 +33,7 @@ namespace DM_Suite
                 }
                 catch (SqliteException e)
                 {
-                    //Do nothing
+                    Debug.WriteLine("Sqlite Database Table could not be created. " + e);
                 }
             }
         }

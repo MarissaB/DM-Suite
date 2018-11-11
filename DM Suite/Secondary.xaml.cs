@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -34,7 +35,7 @@ namespace DM_Suite
                 }
                 catch (SqliteException error)
                 {
-                    //Handle error
+                    Debug.WriteLine("Menu insert failed. " + error);
                     return;
                 }
                 db.Close();
@@ -58,7 +59,7 @@ namespace DM_Suite
                 }
                 catch (SqliteException error)
                 {
-                    //Handle error
+                    Debug.WriteLine("Menu item selection query failed. " + error);
                     return entries;
                 }
                 while (query.Read())

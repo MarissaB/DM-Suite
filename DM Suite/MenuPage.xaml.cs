@@ -11,6 +11,9 @@ using System.Linq;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace DM_Suite
 {
@@ -28,12 +31,26 @@ namespace DM_Suite
 
             OptionsAllCheckBox.IsChecked = true;
             SearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
-            CurrentHeader.Text += ": " + currentMenu.Name;
-            CurrentMenu.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
+            RefreshCurrentMenuInPage();
         }
 
         private Menu currentMenu = new Menu();
         private ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView();
+
+        private async void RefreshCurrentMenuInPage()
+        {
+            if (Menu.IsMenuValid(currentMenu))
+            {
+                CurrentMenuName.Text = currentMenu.Name;
+                CurrentMenu.ItemsSource = currentMenu.MenuItems;
+            }
+            else
+            {
+                MessageDialog errorMessage = new MessageDialog("Error: Invalid Menu.");
+                await errorMessage.ShowAsync();
+                Debug.WriteLine("RefreshCurrentMenu failed due to invalid menu.");
+            }
+        }
 
         private bool IsSearchValid()
         {
@@ -149,8 +166,6 @@ namespace DM_Suite
             Input_Box.Text = string.Empty;
         }
 
-        // Method to grab Text_Entry column from MyTable table in SQLite database
-        //  private List<MenuItem> GetSearchResults(string keyword, List<string> types, decimal min, decimal max)
         private List<MenuItem> GetSearchResults()
           {
             List<MenuItem> results = new List<MenuItem>();
@@ -279,8 +294,7 @@ namespace DM_Suite
                 currentMenu.AddMenuItems(selectedSearchResults);
             }
 
-            CurrentMenu.ItemsSource = null;
-            CurrentMenu.ItemsSource = currentMenu.MenuItems;
+            RefreshCurrentMenuInPage();
         }
 
         private async void RemoveFromCurrentMenu(object sender, RoutedEventArgs e)
@@ -298,15 +312,56 @@ namespace DM_Suite
                 await errorMessage.ShowAsync();
             }
 
-            CurrentMenu.ItemsSource = null;
-            CurrentMenu.ItemsSource = currentMenu.MenuItems;
+            RefreshCurrentMenuInPage();
+        }
+
+        private void UpdateCurrentMenuName(object sender, RoutedEventArgs e)
+        {
+            currentMenu.Name = CurrentMenuName.Text;
         }
 
         private void SaveCurrentMenu(object sender, RoutedEventArgs e)
         {
-            string xml = currentMenu.ExportMenuToXML();
+            string itemsXML = currentMenu.ExportMenuItemsToXML();
         }
 
+        private async void ExportCurrentMenu(object sender, RoutedEventArgs e)
+        {
+            if (Menu.IsMenuValid(currentMenu))
+            {
+                string menuXML = currentMenu.ExportMenuToXML();
+                FileHelper.WriteToFile(menuXML, currentMenu.Name);
+            }
+            else
+            {
+                MessageDialog errorMessage = new MessageDialog("Error: Cannot export invalid menu.");
+                await errorMessage.ShowAsync();
+                Debug.WriteLine("ExportCurrentMenu failed due to invalid menu.");
+            }
+        }
+
+        private async void LoadMenuFromFile(object sender, RoutedEventArgs e)
+        {
+            string fileContents = string.Empty;
+            FileOpenPicker openPicker = new FileOpenPicker
+            {
+                ViewMode = PickerViewMode.List,
+                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+            };
+            openPicker.FileTypeFilter.Add(".txt");
+
+            StorageFile file = await openPicker.PickSingleFileAsync();
+            if (file != null)
+            {
+                fileContents = await FileIO.ReadTextAsync(file);
+                currentMenu = Menu.BuildFromXML(fileContents);
+                RefreshCurrentMenuInPage();
+            }
+            else
+            {
+                Debug.WriteLine("Operation cancelled.");
+            }
+        }
     }
 }
 

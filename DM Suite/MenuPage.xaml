@@ -16,10 +16,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" x:Uid="Heading_Menu" FontSize="24" Margin="0,0,0,10"/>
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" >
            <!--#region Button Bar -->
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
-            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
+        <StackPanel x:Name="ButtonStackPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
+            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="LoadMenuFromFile">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8E5;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
                     <TextBlock x:Uid="Generic_Load"/>
@@ -43,15 +43,24 @@
                     <TextBlock x:Uid="Generic_Clear"/>
                 </StackPanel>
             </Button>
-                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" IsEnabled="False">
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8B6;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
-                        <TextBlock x:Uid="Generic_Import"/>
-                    </StackPanel>
-                </Button>
+            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" IsEnabled="False">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8B6;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <TextBlock x:Uid="Generic_Import"/>
+                </StackPanel>
+            </Button>
+            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExportCurrentMenu">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <TextBlock x:Uid="Generic_Export"/>
+                </StackPanel>
+            </Button>
             </StackPanel>
             <!--#endregion-->
-            <TextBlock x:Name="CurrentHeader" x:Uid="Menu_Current" FontSize="20" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Uid="Menu_Current" FontSize="20" Margin="0,0,0,10"/>
+                <TextBox x:Name="CurrentMenuName" FontSize="20" Margin="10,0,0,10" MinWidth="575" LostFocus="UpdateCurrentMenuName"/>
+            </StackPanel>
             <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" Height="300" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="50">
                 <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="AddToCurrentMenu">
