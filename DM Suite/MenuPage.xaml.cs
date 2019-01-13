@@ -14,6 +14,8 @@ using System.Xml;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using DM_Suite.Services.LoggingServices;
+using MetroLog;
 
 namespace DM_Suite
 {
@@ -46,9 +48,9 @@ namespace DM_Suite
             }
             else
             {
+                LoggingServices.Instance.WriteLine<MenuPage>("RefreshCurrentMenu failed due to invalid menu", LogLevel.Error);
                 MessageDialog errorMessage = new MessageDialog("Error: Invalid Menu.");
                 await errorMessage.ShowAsync();
-                Debug.WriteLine("RefreshCurrentMenu failed due to invalid menu.");
             }
         }
 
@@ -157,7 +159,7 @@ namespace DM_Suite
                 }
                 catch (SqliteException error)
                 {
-                    Debug.WriteLine("Error inserting entries on MenuPage: " + error.ToString());
+                    LoggingServices.Instance.WriteLine<MenuPage>("Error inserting entries on MenuPage: " + error.ToString(), LogLevel.Error);
                     return;
                 }
                 db.Close();
@@ -181,7 +183,7 @@ namespace DM_Suite
                 }
                 catch (SqliteException error)
                 {
-                    Debug.WriteLine("Error reading entries on MenuPage: " + error.ToString());
+                    LoggingServices.Instance.WriteLine<MenuPage>("Failed to read search results on MenuPage: " + error.ToString(), LogLevel.Error);
                     return results;
                 }
                 while (query.Read())
@@ -336,11 +338,11 @@ namespace DM_Suite
             {
                 MessageDialog errorMessage = new MessageDialog("Error: Cannot export invalid menu.");
                 await errorMessage.ShowAsync();
-                Debug.WriteLine("ExportCurrentMenu failed due to invalid menu.");
+                LoggingServices.Instance.WriteLine<MenuPage>("ExportCurrentMenu failed due to invalid menu.", LogLevel.Error);
             }
         }
 
-        private async void LoadMenuFromFile(object sender, RoutedEventArgs e)
+        private async void OpenMenuFromFile(object sender, RoutedEventArgs e)
         {
             string fileContents = string.Empty;
             FileOpenPicker openPicker = new FileOpenPicker
@@ -359,7 +361,7 @@ namespace DM_Suite
             }
             else
             {
-                Debug.WriteLine("Operation cancelled.");
+                LoggingServices.Instance.WriteLine<MenuPage>("Cancelled opening file.", LogLevel.Info);
             }
         }
     }

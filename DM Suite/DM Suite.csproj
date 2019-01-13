@@ -109,6 +109,8 @@
     <Compile Include="RootControl.xaml.cs">
       <DependentUpon>RootControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\LoggingServices\ILoggingServices.cs" />
+    <Compile Include="Services\LoggingServices\LoggingServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -150,6 +152,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MetroLog">
+      <Version>1.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Data.Sqlite">
       <Version>2.1.0</Version>
     </PackageReference>

@@ -1,11 +1,12 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using DM_Suite.Services.LoggingServices;
+using MetroLog;
+using Microsoft.Data.Sqlite;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace DM_Suite
 {
-    public static class DBHelper
+    public class DBHelper
     {
         public static SqliteConnection databaseFile = new SqliteConnection("Filename=sqliteSample.db");
 
@@ -33,7 +34,7 @@ namespace DM_Suite
                     }
                     catch (SqliteException error)
                     {
-                        Debug.WriteLine("Error reading entries on MenuPage: " + error.ToString());
+                        LoggingServices.Instance.WriteLine<DBHelper>("Error reading entries on MenuPage: " + error.ToString(), LogLevel.Error);
                         return results;
                     }
                     while (query.Read())

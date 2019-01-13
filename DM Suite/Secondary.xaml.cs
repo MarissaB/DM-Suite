@@ -23,11 +23,13 @@ namespace DM_Suite
             using (SqliteConnection db = new SqliteConnection("Filename=sqliteSample.db"))
             {
                 db.Open();
-                SqliteCommand insertCommand = new SqliteCommand();
-                insertCommand.Connection = db;
+                SqliteCommand insertCommand = new SqliteCommand
+                {
+                    Connection = db,
 
-                //Use parameterized query to prevent SQL injection attacks
-                insertCommand.CommandText = "INSERT INTO MENU_ITEMS VALUES (NULL, @Entry);";
+                    //Use parameterized query to prevent SQL injection attacks
+                    CommandText = "INSERT INTO MENU_ITEMS VALUES (NULL, @Entry);"
+                };
                 insertCommand.Parameters.AddWithValue("@NAME", Input_Box.Text);
                 try
                 {

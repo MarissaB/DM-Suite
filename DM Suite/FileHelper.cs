@@ -1,12 +1,9 @@
-﻿using System;
+﻿using DM_Suite.Services.LoggingServices;
+using MetroLog;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using Windows.Storage.Provider;
 
 namespace DM_Suite
 {
@@ -28,12 +25,12 @@ namespace DM_Suite
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("WriteToFile failed: " + ex.ToString());
+                    LoggingServices.Instance.WriteLine<FileHelper>("WriteToFile failed: " + ex.ToString(), LogLevel.Error);
                 }
             }
             else
             {
-                Debug.WriteLine("Operation cancelled.");
+                LoggingServices.Instance.WriteLine<FileHelper>("Cancelled write to file.", LogLevel.Info);
             }
         }
     }

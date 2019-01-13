@@ -6,6 +6,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Data.Sqlite;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using DM_Suite.Services.LoggingServices;
+using MetroLog;
 
 namespace DM_Suite
 {
@@ -33,7 +36,7 @@ namespace DM_Suite
                 }
                 catch (SqliteException e)
                 {
-                    Debug.WriteLine("Sqlite Database Table could not be created. " + e);
+                    LoggingServices.Instance.WriteLine<App>("Sqlite Database Table could not be created. " + e, LogLevel.Error);
                 }
             }
         }
@@ -45,6 +48,9 @@ namespace DM_Suite
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            // Log application start
+            LoggingServices.Instance.WriteLine<App>("Application starting...", LogLevel.Info);
+
             if (!(Window.Current.Content is RootControl rootControl))
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
