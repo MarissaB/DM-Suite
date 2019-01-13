@@ -34,7 +34,7 @@ namespace DM_Suite
                     }
                     catch (SqliteException error)
                     {
-                        LoggingServices.Instance.WriteLine<DBHelper>("Error reading entries on MenuPage: " + error.ToString(), LogLevel.Error);
+                        LoggingServices.Instance.WriteLine<DBHelper>("Error creating new MenuItems entries: " + error.ToString(), LogLevel.Error);
                         return results;
                     }
                     while (query.Read())
