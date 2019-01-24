@@ -123,9 +123,6 @@
   <data name="Errors_MenuRemoveFromCurrent" xml:space="preserve">
     <value>Error: There was nothing selected in the Current Menu to remove.</value>
   </data>
-  <data name="Errors_MenuSearch" xml:space="preserve">
-    <value>Invalid input. At least one Type must be selected and Gold values must be numeric.</value>
-  </data>
   <data name="Generic_Add.Text" xml:space="preserve">
     <value>Add</value>
   </data>

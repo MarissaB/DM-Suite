@@ -44,6 +44,7 @@ namespace DM_Suite
             if (Menu.IsMenuValid(currentMenu))
             {
                 CurrentMenuName.Text = currentMenu.Name;
+                CurrentMenu.ItemsSource = null;
                 CurrentMenu.ItemsSource = currentMenu.MenuItems;
             }
             else
@@ -52,56 +53,6 @@ namespace DM_Suite
                 MessageDialog errorMessage = new MessageDialog("Error: Invalid Menu.");
                 await errorMessage.ShowAsync();
             }
-        }
-
-        private bool IsSearchValid()
-        {
-            bool isValid = false;
-            bool costMinValid = IsCostValid(CostMin);
-            bool costMaxValid = IsCostValid(CostMax);
-            bool costRangeValid = false;
-            bool typesValid = false;
-
-            if (Convert.ToDecimal(CostMin.Text) < Convert.ToDecimal(CostMax.Text))
-            {
-                costRangeValid = true;
-            }
-
-            if (OptionsAllCheckBox.IsChecked != false)
-            {
-                typesValid = true;
-            }
-
-            if (costMinValid && costMaxValid && typesValid && costRangeValid)
-            {
-                isValid = true;
-            }
-
-            return isValid;
-        }
-
-        private bool IsCostValid(TextBox input)
-        {
-            bool isCostValid = false;
-
-            if (input.Text.Length > 0)
-            {
-                if (TextBoxRegex.GetIsValid(input))
-                {
-                    isCostValid = true;
-                }
-                else
-                {
-                    isCostValid = false;
-                }
-            }
-            else
-            {
-                isCostValid = true;
-                input.Text = "0";
-            }
-
-            return isCostValid;
         }
 
         private List<string> GetTypes()
@@ -124,21 +75,13 @@ namespace DM_Suite
             return selectedTypes;
         }
 
-        private async void ExecuteSearch(object sender, RoutedEventArgs e)
+        private void ExecuteSearch(object sender, RoutedEventArgs e)
         {
-            if (IsSearchValid())
-            {
-                List<MenuItem> searchResults = DBHelper.SearchMenuItems(Input_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
-                SearchResults.ItemsSource = searchResults;
-                ResultsCount.Text = resourceLoader.GetString("Heading_Results") + CountResults(searchResults);
-                ResultsCount.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                string errorText = resourceLoader.GetString("Errors_MenuSearch");
-                MessageDialog errorMessage = new MessageDialog(errorText);
-                await errorMessage.ShowAsync();
-            }
+            List<MenuItem> searchResults = DBHelper.SearchMenuItems(Input_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
+            SearchResults.ItemsSource = searchResults;
+            ResultsCount.Text = resourceLoader.GetString("Heading_Results") + CountResults(searchResults);
+            ResultsCount.Visibility = Visibility.Visible;
+
         }
 
         // Method to insert text into the SQLite database
@@ -168,33 +111,7 @@ namespace DM_Suite
             Input_Box.Text = string.Empty;
         }
 
-        private List<MenuItem> GetSearchResults()
-          {
-            List<MenuItem> results = new List<MenuItem>();
-
-            using (SqliteConnection db = new SqliteConnection("Filename=sqliteSample.db"))
-            {
-                db.Open();
-                SqliteCommand selectCommand = new SqliteCommand("SELECT * from MENU_ITEMS", db);
-                SqliteDataReader query;
-                try
-                {
-                    query = selectCommand.ExecuteReader();
-                }
-                catch (SqliteException error)
-                {
-                    LoggingServices.Instance.WriteLine<MenuPage>("Failed to read search results on MenuPage: " + error.ToString(), LogLevel.Error);
-                    return results;
-                }
-                while (query.Read())
-                {
-                    MenuItem item = new MenuItem(query);
-                    results.Add(item);
-                }
-                db.Close();
-            }
-            return results;
-        }
+        
 
         private int CountResults(List<MenuItem> menuList)
         {
