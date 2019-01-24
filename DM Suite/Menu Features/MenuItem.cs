@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DM_Suite
+namespace DM_Suite.Menu_Features
 {
     public class MenuItem
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace DM_Suite
+namespace DM_Suite.Menu_Features
 {
     public class Menu
     {
@@ -84,7 +84,7 @@ namespace DM_Suite
             {
                 using (XmlTextWriter writer = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented })
                 {
-                    serializer.Serialize(writer, this.MenuItems);
+                    serializer.Serialize(writer, MenuItems);
                     xml = stringWriter.ToString(); // Your XML
                 }
             }
@@ -93,7 +93,6 @@ namespace DM_Suite
 
         public static Menu BuildFromXML(string xml)
         {
-            // TODO: Validate that the incoming xml string is a valid serialized menu
             XmlSerializer serializer = new XmlSerializer(typeof(Menu));
             Menu menu = new Menu();
 
@@ -109,6 +108,26 @@ namespace DM_Suite
                 }
             }
             return menu;
+        }
+
+        public static List<MenuItem> ImportMenuItemsFromXML(string xml)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(List<MenuItem>));
+            List<MenuItem> items = new List<MenuItem>();
+
+            using (TextReader reader = new StringReader(xml))
+            {
+                try
+                {
+                    items = (List<MenuItem>)serializer.Deserialize(reader);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Building menu from XML failed! " + ex);
+                }
+            }
+
+            return items;
         }
 
         public static bool IsMenuValid(Menu menu)

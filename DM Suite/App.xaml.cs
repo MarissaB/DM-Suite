@@ -8,6 +8,7 @@ using Microsoft.Data.Sqlite;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using DM_Suite.Services.LoggingServices;
+using DM_Suite.Menu_Features;
 using MetroLog;
 
 namespace DM_Suite

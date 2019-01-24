@@ -1,23 +1,17 @@
-﻿using Microsoft.Data.Sqlite;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Diagnostics;
 using Windows.ApplicationModel.Resources;
-using Microsoft.Toolkit.Uwp.UI.Extensions;
 using Windows.UI.Popups;
 using System;
 using System.Linq;
-using System.Xml.Serialization;
-using System.IO;
-using System.Xml;
-using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using DM_Suite.Services.LoggingServices;
+using DM_Suite.Menu_Features;
 using MetroLog;
 
-namespace DM_Suite
+namespace DM_Suite.Menu_Features
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -34,6 +28,7 @@ namespace DM_Suite
             OptionsAllCheckBox.IsChecked = true;
             SearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
             RefreshCurrentMenuInPage();
+            
         }
 
         private Menu currentMenu = new Menu();
@@ -83,35 +78,6 @@ namespace DM_Suite
             ResultsCount.Visibility = Visibility.Visible;
 
         }
-
-        // Method to insert text into the SQLite database
-        private void Add_Text(object sender, RoutedEventArgs e)
-        {
-            using (SqliteConnection db = DBHelper.databaseFile)
-            {
-                db.Open();
-                SqliteCommand insertCommand = new SqliteCommand
-                {
-                    Connection = db,
-                    CommandText = "INSERT INTO MENU_ITEMS VALUES (NULL, @Entry);"
-                };
-                insertCommand.Parameters.AddWithValue("@NAME", Input_Box.Text);
-                try
-                {
-                    insertCommand.ExecuteReader();
-                }
-                catch (SqliteException error)
-                {
-                    LoggingServices.Instance.WriteLine<MenuPage>("Error inserting entries on MenuPage: " + error.ToString(), LogLevel.Error);
-                    return;
-                }
-                db.Close();
-            }
-            SearchResults.ItemsSource = GetSearchResults();
-            Input_Box.Text = string.Empty;
-        }
-
-        
 
         private int CountResults(List<MenuItem> menuList)
         {
@@ -241,7 +207,13 @@ namespace DM_Suite
 
         private void SaveCurrentMenu(object sender, RoutedEventArgs e)
         {
-            string itemsXML = currentMenu.ExportMenuItemsToXML();
+            bool outcome = DBHelper.AddMenu(currentMenu);
+
+            // TODO: Move to button that deals with loading a menu from the database.
+            /* string xml = currentMenu.ExportMenuItemsToXML();
+
+            List<MenuItem> items = new List<MenuItem>();
+            items = Menu.ImportMenuItemsFromXML(xml); */
         }
 
         private async void ExportCurrentMenu(object sender, RoutedEventArgs e)
@@ -280,6 +252,13 @@ namespace DM_Suite
             {
                 LoggingServices.Instance.WriteLine<MenuPage>("Cancelled opening file.", LogLevel.Info);
             }
+        }
+
+        private async void ShowCreateMenuItemDialog(object sender, RoutedEventArgs e)
+        {
+            CreateMenuItem createDialog = new CreateMenuItem();
+            await createDialog.ShowAsync();
+
         }
     }
 }

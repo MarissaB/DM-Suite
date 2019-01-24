@@ -4,6 +4,7 @@ using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DM_Suite.Menu_Features;
 
 namespace DM_Suite
 {
@@ -71,5 +72,38 @@ namespace DM_Suite
             LoggingServices.Instance.WriteLine<DBHelper>("Found results: " + results.Count, LogLevel.Info);
             return results;
         }
+
+        public static bool AddMenu(Menu menu)
+        {
+            bool isSuccessful = false;
+            string commandText = "Insert into MENUS (NAME, LOCATION, CONTENTS) VALUES(@name, @location, @contents)";
+            SqliteCommand insertCommand = new SqliteCommand();
+            insertCommand.Parameters.AddWithValue("@name", menu.Name);
+            insertCommand.Parameters.AddWithValue("@location", menu.Location);
+            insertCommand.Parameters.AddWithValue("@contents", menu.ExportMenuItemsToXML());
+            insertCommand.CommandText = commandText;
+
+            using (SqliteConnection db = databaseFile)
+            {
+                db.Open();
+                insertCommand.Connection = db;
+
+                SqliteDataReader query;
+                try
+                {
+                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting insert...\t\t" + insertCommand.CommandText, LogLevel.Info);
+                    query = insertCommand.ExecuteReader();
+                    isSuccessful = true;
+                }
+                catch (SqliteException error)
+                {
+                    LoggingServices.Instance.WriteLine<DBHelper>("Failed insert...\t\t" + error.ToString(), LogLevel.Error);
+                }
+                db.Close();
+            }
+
+            return isSuccessful;
+        }
+
     }
 }

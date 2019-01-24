@@ -97,12 +97,15 @@
     </Compile>
     <Compile Include="DBHelper.cs" />
     <Compile Include="FileHelper.cs" />
-    <Compile Include="Menu.cs" />
-    <Compile Include="MenuItem.cs" />
+    <Compile Include="Menu Features\CreateMenuItem.xaml.cs">
+      <DependentUpon>CreateMenuItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Menu Features\Menu.cs" />
+    <Compile Include="Menu Features\MenuItem.cs" />
     <Compile Include="Secondary.xaml.cs">
       <DependentUpon>Secondary.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MenuPage.xaml.cs">
+    <Compile Include="Menu Features\MenuPage.xaml.cs">
       <DependentUpon>MenuPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,11 +137,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Menu Features\CreateMenuItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Secondary.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MenuPage.xaml">
+    <Page Include="Menu Features\MenuPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
