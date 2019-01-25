@@ -196,4 +196,10 @@ You can also filter by Cost and Type.</value>
   <data name="Menu_Type.Text" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="Message_DatabaseSaveFailed" xml:space="preserve">
+    <value>Save to database failed. View log file for more information.</value>
+  </data>
+  <data name="Message_DatabaseSaveSuccessful" xml:space="preserve">
+    <value>Save to database was successful!</value>
+  </data>
 </root>

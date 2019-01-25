@@ -94,6 +94,7 @@ namespace DM_Suite
                     LoggingServices.Instance.WriteLine<DBHelper>("Attempting insert...\t\t" + insertCommand.CommandText, LogLevel.Info);
                     query = insertCommand.ExecuteReader();
                     isSuccessful = true;
+                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully saved menu " + menu.Name, LogLevel.Info);
                 }
                 catch (SqliteException error)
                 {

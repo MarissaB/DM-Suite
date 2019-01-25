@@ -79,7 +79,6 @@ namespace DM_Suite.Menu_Features
             SearchResults.ItemsSource = searchResults;
             ResultsCount.Text = resourceLoader.GetString("Heading_Results") + CountResults(searchResults);
             ResultsCount.Visibility = Visibility.Visible;
-
         }
 
         private int CountResults(List<MenuItem> menuList)
@@ -251,10 +250,23 @@ namespace DM_Suite.Menu_Features
             }
         }
 
-        private void SaveMenuToDatabase(object sender, RoutedEventArgs e)
+        private async void SaveMenuToDatabase(object sender, RoutedEventArgs e)
         {
             bool successfulSave = DBHelper.AddMenu(currentMenu);
             unsavedChanges = !successfulSave;
+
+            if (successfulSave)
+            {
+                string messageText = resourceLoader.GetString("Message_DatabaseSaveSuccessful");
+                MessageDialog successMessage = new MessageDialog(messageText);
+                await successMessage.ShowAsync();
+            }
+            else
+            {
+                string messageText = resourceLoader.GetString("Message_DatabaseSaveFailed");
+                MessageDialog failureMessage = new MessageDialog(messageText);
+                await failureMessage.ShowAsync();
+            }
 
             // TODO: Move to button that deals with loading a menu from the database.
             /* string xml = currentMenu.ExportMenuItemsToXML();
