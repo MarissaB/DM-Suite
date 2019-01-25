@@ -97,6 +97,9 @@
     </Compile>
     <Compile Include="DBHelper.cs" />
     <Compile Include="FileHelper.cs" />
+    <Compile Include="Menu Features\EditMenuItem.xaml.cs">
+      <DependentUpon>EditMenuItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Menu Features\CreateMenuItem.xaml.cs">
       <DependentUpon>CreateMenuItem.xaml</DependentUpon>
     </Compile>
@@ -114,6 +117,9 @@
     </Compile>
     <Compile Include="Services\LoggingServices\ILoggingServices.cs" />
     <Compile Include="Services\LoggingServices\LoggingServices.cs" />
+    <Compile Include="UnsavedChanges.xaml.cs">
+      <DependentUpon>UnsavedChanges.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -137,6 +143,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Menu Features\EditMenuItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Menu Features\CreateMenuItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,6 +166,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UnsavedChanges.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

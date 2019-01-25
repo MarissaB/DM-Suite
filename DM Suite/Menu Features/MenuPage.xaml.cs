@@ -10,6 +10,7 @@ using Windows.Storage.Pickers;
 using DM_Suite.Services.LoggingServices;
 using DM_Suite.Menu_Features;
 using MetroLog;
+using System.Threading.Tasks;
 
 namespace DM_Suite.Menu_Features
 {
@@ -24,6 +25,7 @@ namespace DM_Suite.Menu_Features
 
             currentMenu.Name = "Untitled New Menu";
             currentMenu.Location = "Test location";
+            unsavedChanges = false;
 
             OptionsAllCheckBox.IsChecked = true;
             SearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
@@ -33,6 +35,7 @@ namespace DM_Suite.Menu_Features
 
         private Menu currentMenu = new Menu();
         private ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView();
+        bool unsavedChanges;
 
         private async void RefreshCurrentMenuInPage()
         {
@@ -177,6 +180,7 @@ namespace DM_Suite.Menu_Features
                 }
 
                 currentMenu.AddMenuItems(selectedSearchResults);
+                unsavedChanges = true;
             }
 
             RefreshCurrentMenuInPage();
@@ -189,6 +193,7 @@ namespace DM_Suite.Menu_Features
             if (selectedCurrentMenuItems.Count > 0)
             {
                 currentMenu.RemoveMenuItems(selectedCurrentMenuItems);
+                unsavedChanges = true;
             }
             else
             {
@@ -202,12 +207,54 @@ namespace DM_Suite.Menu_Features
 
         private void UpdateCurrentMenuName(object sender, RoutedEventArgs e)
         {
-            currentMenu.Name = CurrentMenuName.Text;
+            if (currentMenu.Name != CurrentMenuName.Text)
+            {
+                currentMenu.Name = CurrentMenuName.Text;
+                unsavedChanges = true;
+            }
         }
 
-        private void SaveCurrentMenu(object sender, RoutedEventArgs e)
+        private async Task<bool> CheckUnsavedChangesAndContinue()
         {
-            bool outcome = DBHelper.AddMenu(currentMenu);
+            if (unsavedChanges)
+            {
+                UnsavedChanges unsavedChangesDialog = new UnsavedChanges();
+                await unsavedChangesDialog.ShowAsync();
+
+                if (unsavedChangesDialog.DiscardChanges)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private async void CreateNewMenu(object sender, RoutedEventArgs e)
+        {
+            bool continueSafely = await CheckUnsavedChangesAndContinue();
+            if (continueSafely)
+            {
+                currentMenu = new Menu
+                {
+                    Name = "Untitled New Menu",
+                    Location = "Test location"
+                };
+                unsavedChanges = false;
+                RefreshCurrentMenuInPage();
+            }
+        }
+
+        private void SaveMenuToDatabase(object sender, RoutedEventArgs e)
+        {
+            bool successfulSave = DBHelper.AddMenu(currentMenu);
+            unsavedChanges = !successfulSave;
 
             // TODO: Move to button that deals with loading a menu from the database.
             /* string xml = currentMenu.ExportMenuItemsToXML();
@@ -216,12 +263,41 @@ namespace DM_Suite.Menu_Features
             items = Menu.ImportMenuItemsFromXML(xml); */
         }
 
-        private async void ExportCurrentMenu(object sender, RoutedEventArgs e)
+        private async void ImportMenuFromFile(object sender, RoutedEventArgs e)
+        {
+            bool continueSafely = await CheckUnsavedChangesAndContinue();
+            if (continueSafely)
+            {
+                string fileContents = string.Empty;
+                FileOpenPicker openPicker = new FileOpenPicker
+                {
+                    ViewMode = PickerViewMode.List,
+                    SuggestedStartLocation = PickerLocationId.DocumentsLibrary
+                };
+                openPicker.FileTypeFilter.Add(".txt");
+
+                StorageFile file = await openPicker.PickSingleFileAsync();
+                if (file != null)
+                {
+                    fileContents = await FileIO.ReadTextAsync(file);
+                    currentMenu = Menu.BuildFromXML(fileContents);
+                    unsavedChanges = false;
+                    RefreshCurrentMenuInPage();
+                }
+                else
+                {
+                    LoggingServices.Instance.WriteLine<MenuPage>("Cancelled opening file.", LogLevel.Info);
+                }
+            }
+        }
+
+        private async void ExportMenuToFile(object sender, RoutedEventArgs e)
         {
             if (Menu.IsMenuValid(currentMenu))
             {
                 string menuXML = currentMenu.ExportMenuToXML();
                 FileHelper.WriteToFile(menuXML, currentMenu.Name);
+                unsavedChanges = false;
             }
             else
             {
@@ -231,34 +307,10 @@ namespace DM_Suite.Menu_Features
             }
         }
 
-        private async void OpenMenuFromFile(object sender, RoutedEventArgs e)
-        {
-            string fileContents = string.Empty;
-            FileOpenPicker openPicker = new FileOpenPicker
-            {
-                ViewMode = PickerViewMode.List,
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
-            };
-            openPicker.FileTypeFilter.Add(".txt");
-
-            StorageFile file = await openPicker.PickSingleFileAsync();
-            if (file != null)
-            {
-                fileContents = await FileIO.ReadTextAsync(file);
-                currentMenu = Menu.BuildFromXML(fileContents);
-                RefreshCurrentMenuInPage();
-            }
-            else
-            {
-                LoggingServices.Instance.WriteLine<MenuPage>("Cancelled opening file.", LogLevel.Info);
-            }
-        }
-
         private async void ShowCreateMenuItemDialog(object sender, RoutedEventArgs e)
         {
             CreateMenuItem createDialog = new CreateMenuItem();
             await createDialog.ShowAsync();
-
         }
     }
 }

@@ -123,41 +123,14 @@
   <data name="Errors_MenuRemoveFromCurrent" xml:space="preserve">
     <value>Error: There was nothing selected in the Current Menu to remove.</value>
   </data>
-  <data name="Generic_Add.Text" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="Generic_Clear.Text" xml:space="preserve">
-    <value>Clear</value>
-  </data>
-  <data name="Generic_Create.Text" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="Generic_Export.Text" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="Generic_Generate.Text" xml:space="preserve">
-    <value>Generate</value>
-  </data>
-  <data name="Generic_Gold.Text" xml:space="preserve">
-    <value>Gold</value>
-  </data>
-  <data name="Generic_Import.Text" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="Generic_Load.Text" xml:space="preserve">
-    <value>Load</value>
+  <data name="Errors_UnsavedChanges.Text" xml:space="preserve">
+    <value>You have unsaved changes. Discard changes and continue?</value>
   </data>
   <data name="Generic_Max.PlaceholderText" xml:space="preserve">
     <value>Max</value>
   </data>
   <data name="Generic_Min.PlaceholderText" xml:space="preserve">
     <value>Min</value>
-  </data>
-  <data name="Generic_Open.Text" xml:space="preserve">
-    <value>Open</value>
-  </data>
-  <data name="Generic_Save.Text" xml:space="preserve">
-    <value>Save</value>
   </data>
   <data name="Generic_SelectAll.Content" xml:space="preserve">
     <value>Select All</value>
@@ -176,6 +149,18 @@
   </data>
   <data name="Menu_Add.Text" xml:space="preserve">
     <value>Add Selected Search Row(s)</value>
+  </data>
+  <data name="Menu_Button_CreateMenu.Text" xml:space="preserve">
+    <value>Create New Menu</value>
+  </data>
+  <data name="Menu_Button_ExportMenu.Text" xml:space="preserve">
+    <value>Export Menu to File</value>
+  </data>
+  <data name="Menu_Button_ImportMenu.Text" xml:space="preserve">
+    <value>Import Menu from File</value>
+  </data>
+  <data name="Menu_Button_SaveMenu.Text" xml:space="preserve">
+    <value>Save Menu to Database</value>
   </data>
   <data name="Menu_Cost" xml:space="preserve">
     <value>Cost</value>
@@ -197,9 +182,6 @@
   </data>
   <data name="Menu_MinGold.Text" xml:space="preserve">
     <value>Gold (Min)</value>
-  </data>
-  <data name="Menu_Name" xml:space="preserve">
-    <value>Name</value>
   </data>
   <data name="Menu_Remove.Text" xml:space="preserve">
     <value>Remove Selected Menu Rows</value>

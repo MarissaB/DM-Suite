@@ -16,51 +16,33 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" x:Uid="Heading_Menu" FontSize="24" Margin="0,0,0,10"/>
-        <StackPanel Grid.Row="1" >
+        <StackPanel Grid.Row="1">
            <!--#region Button Bar -->
-        <StackPanel x:Name="ButtonStackPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
-            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" >
-                <StackPanel Orientation="Horizontal">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE9F9;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
-                    <TextBlock x:Uid="Generic_Load"/>
-                </StackPanel>
-            </Button>
-                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="OpenMenuFromFile">
+            <StackPanel x:Name="ButtonStackPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="CreateNewMenu">
                     <StackPanel Orientation="Horizontal">
-                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8E5;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
-                        <TextBlock x:Uid="Generic_Open"/>
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE78B;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                        <TextBlock x:Uid="Menu_Button_CreateMenu"/>
                     </StackPanel>
                 </Button>
-                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="SaveCurrentMenu">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
-                    <TextBlock x:Uid="Generic_Save"/>
-                </StackPanel>
-            </Button>
-            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE734;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
-                    <TextBlock x:Uid="Generic_Generate"/>
-                </StackPanel>
-            </Button>
-            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ShowCreateMenuItemDialog">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE894;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
-                    <TextBlock x:Uid="Generic_Clear"/>
-                </StackPanel>
-            </Button>
-            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" IsEnabled="False">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8B6;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
-                    <TextBlock x:Uid="Generic_Import"/>
-                </StackPanel>
-            </Button>
-            <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExportCurrentMenu">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
-                    <TextBlock x:Uid="Generic_Export"/>
-                </StackPanel>
-            </Button>
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="SaveMenuToDatabase">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                        <TextBlock x:Uid="Menu_Button_SaveMenu"/>
+                    </StackPanel>
+                </Button>
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ImportMenuFromFile">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8B5;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                        <TextBlock x:Uid="Menu_Button_ImportMenu"/>
+                    </StackPanel>
+                </Button>
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExportMenuToFile">
+                    <StackPanel Orientation="Horizontal">
+                        <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                        <TextBlock x:Uid="Menu_Button_ExportMenu"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
             <!--#endregion-->
             <StackPanel Orientation="Horizontal">
