@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -18,7 +16,26 @@ namespace DM_Suite.Menu_Features
 
         public Menu() { }
 
-
+        public Menu(SqliteDataReader query)
+        {
+            if (query.FieldCount == 4)
+            {
+                try
+                {
+                    Name = query.GetValue(1).ToString();
+                    Location = query.GetValue(2).ToString();
+                    MenuItems = ImportMenuItemsFromXML(query.GetValue(3).ToString());
+                }
+                catch (Exception error)
+                {
+                    Debug.WriteLine("Error mapping Menu from query: " + error.ToString());
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Invalid query result for mapping Menu. Expected FieldCount of 4, found FieldCount of " + query.FieldCount);
+            }
+        }
 
         public void AddMenuItems(List<MenuItem> itemsToAdd)
         {

@@ -55,7 +55,7 @@ namespace DM_Suite
                     }
                     catch (SqliteException error)
                     {
-                        LoggingServices.Instance.WriteLine<DBHelper>("Error fetching database entries: " + error.ToString(), LogLevel.Error);
+                        LoggingServices.Instance.WriteLine<DBHelper>("Error fetching database entries: " + error.Message, LogLevel.Error);
                         return results;
                     }
                     while (query.Read())
@@ -106,5 +106,80 @@ namespace DM_Suite
             return isSuccessful;
         }
 
+        public static bool UpdateMenu(Menu menu)
+        {
+            bool isSuccessful = false;
+            string commandText = "Update MENUS SET Location = @location, Contents = @contents WHERE Name = @name";
+            SqliteCommand updateCommand = new SqliteCommand();
+            updateCommand.Parameters.AddWithValue("@name", menu.Name);
+            updateCommand.Parameters.AddWithValue("@location", menu.Location);
+            updateCommand.Parameters.AddWithValue("@contents", menu.ExportMenuItemsToXML());
+            updateCommand.CommandText = commandText;
+
+            using (SqliteConnection db = databaseFile)
+            {
+                db.Open();
+                updateCommand.Connection = db;
+
+                SqliteDataReader query;
+                try
+                {
+                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting update...\t\t" + updateCommand.CommandText, LogLevel.Info);
+                    query = updateCommand.ExecuteReader();
+                    isSuccessful = true;
+                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully updated menu " + menu.Name, LogLevel.Info);
+                }
+                catch (SqliteException error)
+                {
+                    LoggingServices.Instance.WriteLine<DBHelper>("Failed update...\t\t" + error.Message, LogLevel.Error);
+                }
+                db.Close();
+            }
+
+            return isSuccessful;
+        }
+
+        public static List<Menu> SearchMenus(string name, string location)
+        {
+            string commandText = "Select * from MENUS where NAME like @name AND LOCATION like @location";
+            SqliteCommand selectCommand = new SqliteCommand();
+            selectCommand.Parameters.AddWithValue("@name", "%" + name + "%");
+            selectCommand.Parameters.AddWithValue("@location", "%" + location + "%");
+            string logger = "Input values:\t\tName == " + name + ", Location == " + location;
+
+            selectCommand.CommandText = commandText;
+            List<Menu> results = new List<Menu>();
+            
+            using (SqliteConnection db = databaseFile)
+            {
+                db.Open();
+                selectCommand.Connection = db;
+
+                SqliteDataReader query;
+                try
+                {
+                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting query...\t\t" + selectCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<DBHelper>(logger, LogLevel.Info);
+                    query = selectCommand.ExecuteReader();
+                }
+                catch (SqliteException error)
+                {
+                    LoggingServices.Instance.WriteLine<DBHelper>("Error fetching database entries: " + error.Message, LogLevel.Error);
+                    return results;
+                }
+                while (query.Read())
+                {
+                    Menu item = new Menu(query);
+                    results.Add(item);
+                }
+                db.Close();
+            }
+            selectCommand.Parameters.RemoveAt(selectCommand.Parameters.Count - 1);
+            selectCommand.Connection = null;
+            
+            results = results.OrderBy(item => item.Name).ToList();
+            LoggingServices.Instance.WriteLine<DBHelper>("Found results: " + results.Count, LogLevel.Info);
+            return results;
+        }
     }
 }

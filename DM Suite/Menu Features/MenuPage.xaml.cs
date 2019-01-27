@@ -27,7 +27,7 @@ namespace DM_Suite.Menu_Features
             unsavedChanges = false;
 
             OptionsAllCheckBox.IsChecked = true;
-            MenuSearchResults.ItemsSource = new List<Menu>(); // Give it a blank list to get the headers to show.
+            MenuSearchResults.ItemsSource = DBHelper.SearchMenus(string.Empty, string.Empty);
             MenuItemSearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
             RefreshCurrentMenuInPage();
             
@@ -48,8 +48,8 @@ namespace DM_Suite.Menu_Features
             }
             else
             {
-                LoggingServices.Instance.WriteLine<MenuPage>("RefreshCurrentMenu failed due to invalid menu", LogLevel.Error);
-                MessageDialog errorMessage = new MessageDialog("Error: Invalid Menu.");
+                string errorText = resourceLoader.GetString("Errors_MenuInvalid");
+                MessageDialog errorMessage = new MessageDialog(errorText);
                 await errorMessage.ShowAsync();
             }
         }
@@ -76,16 +76,21 @@ namespace DM_Suite.Menu_Features
 
         private void ExecuteSearch(object sender, RoutedEventArgs e)
         {
-            List<MenuItem> searchResults = DBHelper.SearchMenuItems(InputMenuItemSearch_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
-            MenuItemSearchResults.ItemsSource = searchResults;
-            ResultsCount.Text = resourceLoader.GetString("Heading_Results") + CountResults(searchResults);
-            ResultsCount.Visibility = Visibility.Visible;
-        }
+            if (((Button)sender).Name == "MenuItemSearch")
+            {
+                List<MenuItem> searchResults = DBHelper.SearchMenuItems(InputMenuItemSearch_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
+                MenuItemSearchResults.ItemsSource = searchResults;
+                MenuItemResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
+                MenuItemResultsCount.Visibility = Visibility.Visible;
+            }
 
-        private int CountResults(List<MenuItem> menuList)
-        {
-            int count = menuList.Count;
-            return count;
+            if (((Button)sender).Name == "MenuSearch")
+            {
+                List<Menu> searchResults = DBHelper.SearchMenus(InputMenuNameSearch_Box.Text, InputMenuLocationSearch_Box.Text);
+                MenuSearchResults.ItemsSource = searchResults;
+                MenuResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
+                MenuResultsCount.Visibility = Visibility.Visible;
+            }
         }
 
         private void SearchResults_AutoGeneratingColumn(object sender, Microsoft.Toolkit.Uwp.UI.Controls.DataGridAutoGeneratingColumnEventArgs e)
@@ -93,6 +98,29 @@ namespace DM_Suite.Menu_Features
             if (e.Column.Header.ToString() == "Cost")
             {
                 e.Column.Header = "Cost (gold)";
+            }
+
+            if (e.Column.Header.ToString() == "MenuItems")
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void ClearSearch(object sender, RoutedEventArgs e)
+        {
+            if (((Button)sender).Name == "MenuItemReset")
+            {
+                InputMenuItemSearch_Box.Text = string.Empty;
+                MenuItemSearchResults.ItemsSource = new List<MenuItem>();
+                MenuItemResultsCount.Visibility = Visibility.Collapsed;
+            }
+
+            if (((Button)sender).Name == "MenuReset")
+            {
+                InputMenuNameSearch_Box.Text = string.Empty;
+                InputMenuLocationSearch_Box.Text = string.Empty;
+                MenuSearchResults.ItemsSource = new List<Menu>();
+                MenuResultsCount.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -262,27 +290,41 @@ namespace DM_Suite.Menu_Features
 
         private async void SaveMenuToDatabase(object sender, RoutedEventArgs e)
         {
-            bool successfulSave = DBHelper.AddMenu(currentMenu);
-            unsavedChanges = !successfulSave;
-
-            if (successfulSave)
+            if (Menu.IsMenuValid(currentMenu))
             {
-                string messageText = resourceLoader.GetString("Message_DatabaseSaveSuccessful");
-                MessageDialog successMessage = new MessageDialog(messageText);
-                await successMessage.ShowAsync();
+                bool successfulSave;
+                int menuCount = DBHelper.SearchMenus(currentMenu.Name, string.Empty).Count;
+                if (menuCount == 0) // Menu with this name doesn't exist yet, so we add it
+                {
+                    successfulSave = DBHelper.AddMenu(currentMenu);
+                    unsavedChanges = !successfulSave;
+                }
+                else // Menu with this name exists, so we update it instead of adding since names are unique
+                {
+                    successfulSave = DBHelper.UpdateMenu(currentMenu);
+                    unsavedChanges = !successfulSave;
+                }
+                unsavedChanges = !successfulSave;
+
+                if (successfulSave)
+                {
+                    string messageText = resourceLoader.GetString("Message_DatabaseSaveSuccessful");
+                    MessageDialog successMessage = new MessageDialog(messageText);
+                    await successMessage.ShowAsync();
+                }
+                else
+                {
+                    string messageText = resourceLoader.GetString("Message_DatabaseSaveFailed");
+                    MessageDialog failureMessage = new MessageDialog(messageText);
+                    await failureMessage.ShowAsync();
+                }
             }
             else
             {
-                string messageText = resourceLoader.GetString("Message_DatabaseSaveFailed");
+                string messageText = resourceLoader.GetString("Errors_MenuInvalid");
                 MessageDialog failureMessage = new MessageDialog(messageText);
                 await failureMessage.ShowAsync();
             }
-
-            // TODO: Move to button that deals with loading a menu from the database.
-            /* string xml = currentMenu.ExportMenuItemsToXML();
-
-            List<MenuItem> items = new List<MenuItem>();
-            items = Menu.ImportMenuItemsFromXML(xml); */
         }
 
         private async void ImportMenuFromFile(object sender, RoutedEventArgs e)
@@ -323,9 +365,9 @@ namespace DM_Suite.Menu_Features
             }
             else
             {
-                MessageDialog errorMessage = new MessageDialog("Error: Cannot export invalid menu.");
-                await errorMessage.ShowAsync();
-                LoggingServices.Instance.WriteLine<MenuPage>("ExportCurrentMenu failed due to invalid menu.", LogLevel.Error);
+                string messageText = resourceLoader.GetString("Errors_MenuInvalid");
+                MessageDialog failureMessage = new MessageDialog(messageText);
+                await failureMessage.ShowAsync();
             }
         }
 
@@ -333,6 +375,24 @@ namespace DM_Suite.Menu_Features
         {
             CreateMenuItem createDialog = new CreateMenuItem();
             await createDialog.ShowAsync();
+        }
+
+        private async void MenuSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MenuSearchResults.SelectedItem != null)
+            {
+                bool continueSafely = await CheckUnsavedChangesAndContinue();
+                if (continueSafely)
+                {
+                    currentMenu = (Menu)MenuSearchResults.SelectedItem;
+                    unsavedChanges = false;
+                    RefreshCurrentMenuInPage();
+                }
+                else
+                {
+                    MenuSearchResults.SelectedItem = null;
+                }
+            }
         }
     }
 }

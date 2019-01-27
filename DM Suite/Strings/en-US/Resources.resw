@@ -120,6 +120,9 @@
   <data name="Errors_MenuAddToCurrent" xml:space="preserve">
     <value>Warning: Some items were already in the current menu and could not be added.</value>
   </data>
+  <data name="Errors_MenuInvalid" xml:space="preserve">
+    <value>Error: Invalid Menu. Menu must have a Name.</value>
+  </data>
   <data name="Errors_MenuRemoveFromCurrent" xml:space="preserve">
     <value>Error: There was nothing selected in the Current Menu to remove.</value>
   </data>
