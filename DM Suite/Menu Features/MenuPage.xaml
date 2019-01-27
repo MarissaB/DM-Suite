@@ -12,44 +12,77 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" x:Uid="Heading_Menu" FontSize="24" Margin="0,0,0,10"/>
-        <StackPanel Grid.Row="1">
-           <!--#region Button Bar -->
-            <StackPanel x:Name="ButtonStackPanel" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
-                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="CreateNewMenu">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Uid="Heading_Menu" Grid.Row="0" Grid.Column="0" FontSize="24" Margin="0,0,0,10"/>
+        <!--#region Menu Search Controls-->
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0" Padding="5,5,5,5">
+            <TextBlock x:Uid="Menu_Heading_SearchMenus" FontSize="20" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Vertical" Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" BorderThickness="2" BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                    <TextBlock x:Uid="Menu_Name" Margin="10,0,10,0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="InputMenuNameSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False" />
+                        <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExecuteSearch">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" />
+                            </StackPanel>
+                        </Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                    <TextBlock x:Uid="Menu_Location" Margin="10,0,10,0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="InputMenuLocationSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <!--#endregion-->
+        <Custom:DataGrid Grid.Row="2" Grid.Column="0" Padding="5,5,5,5" Name="MenuSearchResults" VerticalScrollBarVisibility="Auto" IsReadOnly="True" AutoGenerateColumns="True" HorizontalAlignment="Stretch"/>
+        <!--#region Current Menu Button Bar -->
+        <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Padding="5,5,5,5">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Height="50">
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="CreateNewMenu" Width="150">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE78B;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
                         <TextBlock x:Uid="Menu_Button_CreateMenu"/>
                     </StackPanel>
                 </Button>
-                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="SaveMenuToDatabase">
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="SaveMenuToDatabase" Width="150">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74E;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
                         <TextBlock x:Uid="Menu_Button_SaveMenu"/>
                     </StackPanel>
                 </Button>
-                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ImportMenuFromFile">
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ImportMenuFromFile" Width="150">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE8B5;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
                         <TextBlock x:Uid="Menu_Button_ImportMenu"/>
                     </StackPanel>
                 </Button>
-                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExportMenuToFile">
+                <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExportMenuToFile" Width="150">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xEDE1;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
                         <TextBlock x:Uid="Menu_Button_ExportMenu"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <!--#endregion-->
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Uid="Menu_Current" FontSize="20" Margin="0,0,0,10"/>
+                <TextBlock x:Uid="Menu_Name" FontSize="20" Margin="0,0,0,10"/>
                 <TextBox x:Name="CurrentMenuName" FontSize="20" Margin="10,0,0,10" MinWidth="575" TextChanged="UpdateCurrentMenuName"/>
             </StackPanel>
-            <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" Height="300" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Uid="Menu_Location" FontSize="20" Margin="0,0,0,10"/>
+                <TextBox x:Name="CurrentMenuLocation" FontSize="20" Margin="10,0,0,10" MinWidth="575" TextChanged="UpdateCurrentMenuLocation"/>
+            </StackPanel>
+        </StackPanel>
+        <!--#endregion-->
+        <!--#region Current Menu -->
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1" Padding="5,5,5,5">
+            <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" MinHeight="350" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="50">
                 <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="AddToCurrentMenu">
                     <StackPanel Orientation="Horizontal">
@@ -64,10 +97,11 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-            
         </StackPanel>
-        <StackPanel Grid.Row="2">
-            <TextBlock x:Uid="Heading_Search" FontSize="20" Margin="0,0,0,10"/>
+        <!--#endregion-->
+        <!--#region Menu Item Controls -->
+        <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Vertical" Padding="5,5,5,5">
+            <TextBlock x:Uid="Menu_Heading_SearchItems" FontSize="20" Margin="0,0,0,10"/>
             <Grid Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" BorderThickness="2" BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}" Padding="10,10,10,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -80,9 +114,9 @@
                     <CheckBox x:Name="TreatCheckBox" x:Uid="Menu_Treat" Margin="24,0,0,0" Checked="Option_Checked" Unchecked="Option_Unchecked"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Grid.Column="1">
-                    <TextBlock x:Uid="Menu_SearchDescription" TextWrapping="WrapWholeWords" Margin="0, 0, 0, 5"/>
+                    <TextBlock x:Uid="Menu_Heading_SearchItemsDescription" TextWrapping="WrapWholeWords" Margin="0, 0, 0, 5"/>
                     <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="Input_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False"/>
+                        <TextBox x:Name="InputMenuItemSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False"/>
                         <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExecuteSearch">
                             <StackPanel Orientation="Horizontal">
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" />
@@ -98,7 +132,26 @@
                     </StackPanel>
                 </StackPanel>
             </Grid>
-            <Custom:DataGrid Name="SearchResults" VerticalScrollBarVisibility="Auto" Height="300" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
+            <Button VerticalAlignment="Center" Margin="15, 30, 15, 10" Width="250" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED56;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <TextBlock x:Uid="Menu_Button_CreateMenuItem"/>
+                </StackPanel>
+            </Button>
+            <Button VerticalAlignment="Center" Margin="15, 10, 15, 10" Width="250" HorizontalAlignment="Center" IsEnabled="False">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70F;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons" />
+                    <TextBlock x:Uid="Menu_Button_EditMenuItem" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Button>
+            <Button VerticalAlignment="Center" Margin="15, 10, 15, 10" Width="250" HorizontalAlignment="Center" IsEnabled="False">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <TextBlock x:Uid="Menu_Button_DeleteMenuItem" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Button>
         </StackPanel>
+        <!--#endregion-->
+        <Custom:DataGrid Grid.Row="3" Grid.Column="1" Padding="5,5,5,5" Name="MenuItemSearchResults" VerticalScrollBarVisibility="Auto" IsReadOnly="True" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
     </Grid>
 </Page>

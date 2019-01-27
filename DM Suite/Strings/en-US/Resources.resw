@@ -141,9 +141,6 @@
   <data name="Heading_Results" xml:space="preserve">
     <value>Results: </value>
   </data>
-  <data name="Heading_Search.Text" xml:space="preserve">
-    <value>Search</value>
-  </data>
   <data name="Icons.Margin" xml:space="preserve">
     <value>0, 0, 10, 0</value>
   </data>
@@ -151,22 +148,28 @@
     <value>Add Selected Search Row(s)</value>
   </data>
   <data name="Menu_Button_CreateMenu.Text" xml:space="preserve">
-    <value>Create New Menu</value>
+    <value>New Menu</value>
+  </data>
+  <data name="Menu_Button_CreateMenuItem.Text" xml:space="preserve">
+    <value>New Menu Item</value>
+  </data>
+  <data name="Menu_Button_DeleteMenuItem.Text" xml:space="preserve">
+    <value>Delete Selected Item(s)</value>
+  </data>
+  <data name="Menu_Button_EditMenuItem.Text" xml:space="preserve">
+    <value>Edit Selected Item</value>
   </data>
   <data name="Menu_Button_ExportMenu.Text" xml:space="preserve">
-    <value>Export Menu to File</value>
+    <value>Export File</value>
   </data>
   <data name="Menu_Button_ImportMenu.Text" xml:space="preserve">
-    <value>Import Menu from File</value>
+    <value>Import File</value>
   </data>
   <data name="Menu_Button_SaveMenu.Text" xml:space="preserve">
-    <value>Save Menu to Database</value>
+    <value>Save to DB</value>
   </data>
   <data name="Menu_Cost" xml:space="preserve">
     <value>Cost</value>
-  </data>
-  <data name="Menu_Current.Text" xml:space="preserve">
-    <value>Current Menu: </value>
   </data>
   <data name="Menu_Description" xml:space="preserve">
     <value>Description</value>
@@ -177,18 +180,36 @@
   <data name="Menu_Food.Content" xml:space="preserve">
     <value>Foods</value>
   </data>
+  <data name="Menu_Heading_SearchItems.Text" xml:space="preserve">
+    <value>Search Menu Items</value>
+  </data>
+  <data name="Menu_Heading_SearchItemsDescription.Text" xml:space="preserve">
+    <value>Searching via keyword matches the Name and Description fields.
+You can also filter by Cost and Type.</value>
+  </data>
+  <data name="Menu_Heading_SearchMenus.Text" xml:space="preserve">
+    <value>Search Saved Menus</value>
+  </data>
+  <data name="Menu_Location.Text" xml:space="preserve">
+    <value>Location:</value>
+  </data>
   <data name="Menu_MaxGold.Text" xml:space="preserve">
     <value>Gold (Max)</value>
   </data>
   <data name="Menu_MinGold.Text" xml:space="preserve">
     <value>Gold (Min)</value>
   </data>
+  <data name="Menu_Name.Text" xml:space="preserve">
+    <value>Menu Name:</value>
+  </data>
+  <data name="Menu_NewLocation" xml:space="preserve">
+    <value>Unknown Location</value>
+  </data>
+  <data name="Menu_NewName" xml:space="preserve">
+    <value>Untitled New Menu</value>
+  </data>
   <data name="Menu_Remove.Text" xml:space="preserve">
     <value>Remove Selected Menu Rows</value>
-  </data>
-  <data name="Menu_SearchDescription.Text" xml:space="preserve">
-    <value>Searching via keyword matches the Name and Description fields.
-You can also filter by Cost and Type.</value>
   </data>
   <data name="Menu_Treat.Content" xml:space="preserve">
     <value>Treats</value>

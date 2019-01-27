@@ -98,7 +98,7 @@ namespace DM_Suite
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Failed insert...\t\t" + error.ToString(), LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<DBHelper>("Failed insert...\t\t" + error.Message, LogLevel.Error);
                 }
                 db.Close();
             }

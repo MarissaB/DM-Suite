@@ -8,27 +8,27 @@ using System.Linq;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using DM_Suite.Services.LoggingServices;
-using DM_Suite.Menu_Features;
 using MetroLog;
 using System.Threading.Tasks;
 
 namespace DM_Suite.Menu_Features
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MenuPage : Page
     {
+        private string newMenuName = ResourceLoader.GetForCurrentView().GetString("Menu_NewName");
+        private string newMenuLocation = ResourceLoader.GetForCurrentView().GetString("Menu_NewLocation");
+
         public MenuPage()
         {
             InitializeComponent();
 
-            currentMenu.Name = "Untitled New Menu";
-            currentMenu.Location = "Test location";
+            currentMenu.Name = newMenuName;
+            currentMenu.Location = newMenuLocation;
             unsavedChanges = false;
 
             OptionsAllCheckBox.IsChecked = true;
-            SearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
+            MenuSearchResults.ItemsSource = new List<Menu>(); // Give it a blank list to get the headers to show.
+            MenuItemSearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
             RefreshCurrentMenuInPage();
             
         }
@@ -42,6 +42,7 @@ namespace DM_Suite.Menu_Features
             if (Menu.IsMenuValid(currentMenu))
             {
                 CurrentMenuName.Text = currentMenu.Name;
+                CurrentMenuLocation.Text = currentMenu.Location;
                 CurrentMenu.ItemsSource = null;
                 CurrentMenu.ItemsSource = currentMenu.MenuItems;
             }
@@ -75,8 +76,8 @@ namespace DM_Suite.Menu_Features
 
         private void ExecuteSearch(object sender, RoutedEventArgs e)
         {
-            List<MenuItem> searchResults = DBHelper.SearchMenuItems(Input_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
-            SearchResults.ItemsSource = searchResults;
+            List<MenuItem> searchResults = DBHelper.SearchMenuItems(InputMenuItemSearch_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
+            MenuItemSearchResults.ItemsSource = searchResults;
             ResultsCount.Text = resourceLoader.GetString("Heading_Results") + CountResults(searchResults);
             ResultsCount.Visibility = Visibility.Visible;
         }
@@ -165,11 +166,11 @@ namespace DM_Suite.Menu_Features
 
         private async void AddToCurrentMenu(object sender, RoutedEventArgs e)
         {
-            List<MenuItem> selectedSearchResults = SearchResults.SelectedItems.Cast<MenuItem>().ToList();
+            List<MenuItem> selectedSearchResults = MenuItemSearchResults.SelectedItems.Cast<MenuItem>().ToList();
 
             if (selectedSearchResults.Count > 0)
             {
-                SearchResults.SelectedItems.Clear();
+                MenuItemSearchResults.SelectedItems.Clear();
 
                 if (currentMenu.DoesMenuContainDuplicates(selectedSearchResults))
                 {
@@ -213,6 +214,15 @@ namespace DM_Suite.Menu_Features
             }
         }
 
+        private void UpdateCurrentMenuLocation(object sender, RoutedEventArgs e)
+        {
+            if (currentMenu.Location != CurrentMenuLocation.Text)
+            {
+                currentMenu.Location = CurrentMenuLocation.Text;
+                unsavedChanges = true;
+            }
+        }
+
         private async Task<bool> CheckUnsavedChangesAndContinue()
         {
             if (unsavedChanges)
@@ -242,8 +252,8 @@ namespace DM_Suite.Menu_Features
             {
                 currentMenu = new Menu
                 {
-                    Name = "Untitled New Menu",
-                    Location = "Test location"
+                    Name = newMenuName,
+                    Location = newMenuLocation
                 };
                 unsavedChanges = false;
                 RefreshCurrentMenuInPage();
