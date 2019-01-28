@@ -78,18 +78,12 @@ namespace DM_Suite.Menu_Features
         {
             if (((Button)sender).Name == "MenuItemSearch")
             {
-                List<MenuItem> searchResults = DBHelper.SearchMenuItems(InputMenuItemSearch_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
-                MenuItemSearchResults.ItemsSource = searchResults;
-                MenuItemResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
-                MenuItemResultsCount.Visibility = Visibility.Visible;
+                SearchMenuItems();
             }
 
             if (((Button)sender).Name == "MenuSearch")
             {
-                List<Menu> searchResults = DBHelper.SearchMenus(InputMenuNameSearch_Box.Text, InputMenuLocationSearch_Box.Text);
-                MenuSearchResults.ItemsSource = searchResults;
-                MenuResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
-                MenuResultsCount.Visibility = Visibility.Visible;
+                SearchMenus();
             }
         }
 
@@ -122,6 +116,22 @@ namespace DM_Suite.Menu_Features
                 MenuSearchResults.ItemsSource = new List<Menu>();
                 MenuResultsCount.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void SearchMenuItems()
+        {
+            List<MenuItem> searchResults = DBHelper.SearchMenuItems(InputMenuItemSearch_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
+            MenuItemSearchResults.ItemsSource = searchResults;
+            MenuItemResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
+            MenuItemResultsCount.Visibility = Visibility.Visible;
+        }
+
+        private void SearchMenus()
+        {
+            List<Menu> searchResults = DBHelper.SearchMenus(InputMenuNameSearch_Box.Text, InputMenuLocationSearch_Box.Text);
+            MenuSearchResults.ItemsSource = searchResults;
+            MenuResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
+            MenuResultsCount.Visibility = Visibility.Visible;
         }
 
         #region Checkbox toggle Stuff
@@ -273,6 +283,21 @@ namespace DM_Suite.Menu_Features
             }
         }
 
+        private async Task<bool> ConfirmDeletion()
+        {
+            ConfirmDelete confirmDeleteDialog = new ConfirmDelete();
+            await confirmDeleteDialog.ShowAsync();
+
+            if (confirmDeleteDialog.DeleteRecord)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private async void CreateNewMenu(object sender, RoutedEventArgs e)
         {
             bool continueSafely = await CheckUnsavedChangesAndContinue();
@@ -375,12 +400,50 @@ namespace DM_Suite.Menu_Features
         {
             CreateMenuItem createDialog = new CreateMenuItem();
             await createDialog.ShowAsync();
+
+            string itemName = createDialog.NameInput;
+            string itemDescription = createDialog.DescriptionInput;
+            string itemCost = createDialog.CostInput;
+            string itemType = createDialog.TypeInput;
+
+            if (MenuItem.IsMenuItemValid(itemName, itemCost, itemType))
+            {
+                MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, itemType);
+                bool successfulSave = false;
+
+                if(string.IsNullOrEmpty(DBHelper.SearchMenuItem(newItem).Name)) // check if item already exists in database
+                { 
+                    successfulSave = DBHelper.AddMenuItem(newItem);
+                }
+                
+                if (successfulSave)
+                {
+                    string messageText = resourceLoader.GetString("Message_DatabaseSaveSuccessful");
+                    MessageDialog successMessage = new MessageDialog(messageText);
+                    await successMessage.ShowAsync();
+                }
+                else
+                {
+                    string messageText = resourceLoader.GetString("Message_DatabaseSaveFailed");
+                    MessageDialog failureMessage = new MessageDialog(messageText);
+                    await failureMessage.ShowAsync();
+                }
+            }
+            else
+            {
+                string messageText = resourceLoader.GetString("Errors_MenuItemInvalid");
+                MessageDialog failureMessage = new MessageDialog(messageText);
+                await failureMessage.ShowAsync();
+            }
+
         }
 
         private async void MenuSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (MenuSearchResults.SelectedItem != null)
             {
+                MenuDelete.IsEnabled = true;
+                MenuDeleteIcon.Opacity = 1;
                 bool continueSafely = await CheckUnsavedChangesAndContinue();
                 if (continueSafely)
                 {
@@ -392,6 +455,91 @@ namespace DM_Suite.Menu_Features
                 {
                     MenuSearchResults.SelectedItem = null;
                 }
+            }
+            else
+            {
+                MenuDelete.IsEnabled = false;
+                MenuDeleteIcon.Opacity = 0.6;
+            }
+        }
+
+        private async void DeleteSelectedMenu(object sender, RoutedEventArgs e)
+        {
+            bool continueSafely = await ConfirmDeletion();
+            if (continueSafely)
+            {
+                bool isSuccessful = DBHelper.DeleteMenu((Menu)MenuSearchResults.SelectedItem);
+                if (isSuccessful)
+                {
+                    string messageText = resourceLoader.GetString("Message_DatabaseDeleteSuccessful");
+                    MessageDialog successMessage = new MessageDialog(messageText);
+                    await successMessage.ShowAsync();
+                }
+                else
+                {
+                    string messageText = resourceLoader.GetString("Message_DatabaseDeleteFailed");
+                    MessageDialog failureMessage = new MessageDialog(messageText);
+                    await failureMessage.ShowAsync();
+                }
+
+                SearchMenus();
+            }
+        }
+
+        private void MenuItemSearchResults_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (MenuItemSearchResults.SelectedItems.Count > 0)
+            {
+                MenuItemDelete.IsEnabled = true;
+                MenuItemDeleteIcon.Opacity = 1;
+            }
+            else
+            {
+                MenuItemDelete.IsEnabled = false;
+                MenuItemDeleteIcon.Opacity = 0.6;
+            }
+
+            if (MenuItemSearchResults.SelectedItems.Count == 1)
+            {
+                MenuItemEdit.IsEnabled = true;
+                MenuItemEditIcon.Opacity = 1;
+            }
+            else
+            {
+                MenuItemEdit.IsEnabled = false;
+                MenuItemEditIcon.Opacity = 0.6;
+            }
+        }
+
+        private async void DeleteSelectedMenuItems(object sender, RoutedEventArgs e)
+        {
+            bool continueSafely = await ConfirmDeletion();
+            if (continueSafely)
+            {
+                int successes = 0;
+                foreach (object selected in MenuItemSearchResults.SelectedItems)
+                {
+                    bool isSuccessful = DBHelper.DeleteMenuItem((MenuItem)selected);
+                    if (isSuccessful)
+                    {
+                        successes++;
+                    }
+                }
+
+                if (successes == MenuItemSearchResults.SelectedItems.Count)
+                {
+                    string messageText = resourceLoader.GetString("Message_DatabaseDeleteSuccessful");
+                    MessageDialog successMessage = new MessageDialog(messageText);
+                    await successMessage.ShowAsync();
+                }
+                else
+                {
+                    string messageText = resourceLoader.GetString("Message_DatabaseDeleteFailed");
+                    MessageDialog failureMessage = new MessageDialog(messageText);
+                    await failureMessage.ShowAsync();
+                }
+
+                SearchMenuItems();            
             }
         }
     }

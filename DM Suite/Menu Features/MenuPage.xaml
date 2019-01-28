@@ -42,7 +42,13 @@
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                     <TextBlock x:Uid="Menu_Location" Margin="10,0,10,0" VerticalAlignment="Center"/>
                     <TextBox x:Name="InputMenuLocationSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False"/>
-                    <TextBlock x:Name="MenuResultsCount" Visibility="Collapsed" Margin="55,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource CheckBoxContentDisabledForegroundThemeBrush}"/>
+                    <Button x:Name="MenuDelete" Click="DeleteSelectedMenu" VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="150" HorizontalAlignment="Center" IsEnabled="False">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon x:Name="MenuDeleteIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons" Opacity="0.6"/>
+                            <TextBlock x:Uid="Menu_Button_DeleteMenu" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Button>
+                    <TextBlock x:Name="MenuResultsCount" Margin="30,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource CheckBoxContentDisabledForegroundThemeBrush}"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
@@ -143,26 +149,26 @@
                     </StackPanel>
                 </StackPanel>
             </Grid>
-            <Button VerticalAlignment="Center" Margin="15, 10, 15, 5" Width="250" HorizontalAlignment="Center">
+            <Button VerticalAlignment="Center" Margin="15, 10, 15, 5" Width="250" HorizontalAlignment="Center" Click="ShowCreateMenuItemDialog">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xED56;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
                     <TextBlock x:Uid="Menu_Button_CreateMenuItem"/>
                 </StackPanel>
             </Button>
-            <Button VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="250" HorizontalAlignment="Center" IsEnabled="False">
+            <Button x:Name="MenuItemEdit" VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="250" HorizontalAlignment="Center" IsEnabled="False">
                 <StackPanel Orientation="Horizontal">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE70F;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons" />
+                    <FontIcon x:Name="MenuItemEditIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE70F;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons" Opacity="0.6" />
                     <TextBlock x:Uid="Menu_Button_EditMenuItem" TextWrapping="Wrap"/>
                 </StackPanel>
             </Button>
-            <Button VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="250" HorizontalAlignment="Center" IsEnabled="False">
+            <Button x:Name="MenuItemDelete" VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="250" HorizontalAlignment="Center" IsEnabled="False" Click="DeleteSelectedMenuItems">
                 <StackPanel Orientation="Horizontal">
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
+                    <FontIcon x:Name="MenuItemDeleteIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons" Opacity="0.6"/>
                     <TextBlock x:Uid="Menu_Button_DeleteMenuItem" TextWrapping="Wrap"/>
                 </StackPanel>
             </Button>
         </StackPanel>
         <!--#endregion-->
-        <Custom:DataGrid Grid.Row="3" Grid.Column="1" Padding="5,5,5,5" Name="MenuItemSearchResults" VerticalScrollBarVisibility="Auto" IsReadOnly="True" SelectionMode="Extended" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
+        <Custom:DataGrid Grid.Row="3" Grid.Column="1" SelectionChanged="MenuItemSearchResults_SelectionChanged" Padding="5,5,5,5" Name="MenuItemSearchResults" VerticalScrollBarVisibility="Auto" IsReadOnly="True" SelectionMode="Extended" AutoGenerateColumns="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
     </Grid>
 </Page>

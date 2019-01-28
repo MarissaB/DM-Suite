@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace DM_Suite.Menu_Features
@@ -12,6 +13,14 @@ namespace DM_Suite.Menu_Features
         public string Type { get; set; }
 
         public MenuItem() { }
+
+        public MenuItem(string name, string description, string cost, string type)
+        {
+            Name = name;
+            Description = description;
+            Cost = Convert.ToDecimal(cost);
+            Type = type;
+        }
 
         public MenuItem(SqliteDataReader query)
         {
@@ -33,6 +42,28 @@ namespace DM_Suite.Menu_Features
             {
                 Debug.WriteLine("Invalid query result for mapping MenuItem. Expected FieldCount of 5, found FieldCount of " + query.FieldCount);
             }
+        }
+
+        public static bool IsMenuItemValid(string nameInput, string costInput, string typeInput)
+        {
+            List<string> types = new List<string>
+            {
+                "Food",
+                "Drink",
+                "Treat"
+            };
+
+            // Check for an empty name and invalid type
+            if (!string.IsNullOrEmpty(nameInput) && types.Contains(typeInput))
+            {
+                try
+                {
+                    decimal cost = Convert.ToDecimal(costInput);
+                    return true;
+                }
+                catch { return false; }
+            }
+            else { return false; }
         }
     }
 }

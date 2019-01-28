@@ -117,11 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Errors_ConfirmDelete.Text" xml:space="preserve">
+    <value>Are you sure you wish to delete this record from the database?</value>
+  </data>
   <data name="Errors_MenuAddToCurrent" xml:space="preserve">
     <value>Warning: Some items were already in the current menu and could not be added.</value>
   </data>
   <data name="Errors_MenuInvalid" xml:space="preserve">
     <value>Error: Invalid Menu. Menu must have a Name.</value>
+  </data>
+  <data name="Errors_MenuItemInvalid" xml:space="preserve">
+    <value>Error: Invalid Menu Item. Must have a Name, Cost and a Type.</value>
   </data>
   <data name="Errors_MenuRemoveFromCurrent" xml:space="preserve">
     <value>Error: There was nothing selected in the Current Menu to remove.</value>
@@ -156,11 +162,14 @@
   <data name="Menu_Button_CreateMenuItem.Text" xml:space="preserve">
     <value>New Menu Item</value>
   </data>
+  <data name="Menu_Button_DeleteMenu.Text" xml:space="preserve">
+    <value>Delete Menu</value>
+  </data>
   <data name="Menu_Button_DeleteMenuItem.Text" xml:space="preserve">
-    <value>Delete Selected Item(s)</value>
+    <value>Delete Item(s)</value>
   </data>
   <data name="Menu_Button_EditMenuItem.Text" xml:space="preserve">
-    <value>Edit Selected Item</value>
+    <value>Edit Item</value>
   </data>
   <data name="Menu_Button_ExportMenu.Text" xml:space="preserve">
     <value>Export File</value>
@@ -178,10 +187,10 @@
     <value>Description</value>
   </data>
   <data name="Menu_Drink.Content" xml:space="preserve">
-    <value>Drinks</value>
+    <value>Drink</value>
   </data>
   <data name="Menu_Food.Content" xml:space="preserve">
-    <value>Foods</value>
+    <value>Food</value>
   </data>
   <data name="Menu_Heading_SearchItems.Text" xml:space="preserve">
     <value>Search Menu Items</value>
@@ -215,10 +224,16 @@ You can also filter by Cost and Type.</value>
     <value>Remove Selected Menu Rows</value>
   </data>
   <data name="Menu_Treat.Content" xml:space="preserve">
-    <value>Treats</value>
+    <value>Treat</value>
   </data>
   <data name="Menu_Type.Text" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="Message_DatabaseDeleteFailed" xml:space="preserve">
+    <value>Deletion failed. View log file for more information.</value>
+  </data>
+  <data name="Message_DatabaseDeleteSuccessful" xml:space="preserve">
+    <value>Deletion was successful!</value>
   </data>
   <data name="Message_DatabaseSaveFailed" xml:space="preserve">
     <value>Save to database failed. View log file for more information.</value>

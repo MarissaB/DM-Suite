@@ -25,7 +25,7 @@
             <TextBox x:Name="Cost"/>
             
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Padding="20, 10, 20, 0" VerticalAlignment="Center">
+        <StackPanel x:Name="TypeSelections" Orientation="Vertical" Grid.Column="1" Padding="20, 10, 20, 0" VerticalAlignment="Center">
             <RadioButton x:Name="FoodOption" GroupName="TypeOptions" x:Uid="Menu_Food" Margin="24,0,0,0" IsChecked="True" />
             <RadioButton x:Name="DrinkOption" GroupName="TypeOptions" x:Uid="Menu_Drink" Margin="24,0,0,0" />
             <RadioButton x:Name="TreatOption" GroupName="TypeOptions" x:Uid="Menu_Treat" Margin="24,0,0,0" />
