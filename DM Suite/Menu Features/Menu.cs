@@ -88,7 +88,7 @@ namespace DM_Suite.Menu_Features
                 using (XmlTextWriter writer = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented })
                 {
                     serializer.Serialize(writer, this);
-                    xml = stringWriter.ToString(); // Your XML
+                    xml = stringWriter.ToString();
                 }
             }
             return xml;
@@ -104,7 +104,7 @@ namespace DM_Suite.Menu_Features
                 using (XmlTextWriter writer = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented })
                 {
                     serializer.Serialize(writer, MenuItems);
-                    xml = stringWriter.ToString(); // Your XML
+                    xml = stringWriter.ToString();
                 }
             }
             return xml;
@@ -123,7 +123,7 @@ namespace DM_Suite.Menu_Features
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Building menu from XML failed! " + ex);
+                    LoggingServices.Instance.WriteLine<Menu>("Building menu list from XML failed! " + ex.Message, LogLevel.Info);
                 }
             }
             return menu;
@@ -142,7 +142,7 @@ namespace DM_Suite.Menu_Features
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Building menu from XML failed! " + ex);
+                    LoggingServices.Instance.WriteLine<Menu>("Building menu item list from XML failed! " + ex.Message, LogLevel.Info);
                 }
             }
 
