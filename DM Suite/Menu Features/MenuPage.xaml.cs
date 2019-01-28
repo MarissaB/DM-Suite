@@ -542,6 +542,52 @@ namespace DM_Suite.Menu_Features
                 SearchMenuItems();            
             }
         }
+
+        private async void EditMenuItem(object sender, RoutedEventArgs e)
+        {
+            MenuItem editingItem = (MenuItem)MenuItemSearchResults.SelectedItem;
+            EditMenuItem editDialog = new EditMenuItem
+            {
+                NameInput = editingItem.Name,
+                CostInput = editingItem.Cost.ToString(),
+                DescriptionInput = editingItem.Description,
+                TypeInput = editingItem.Type
+            };
+            await editDialog.ShowAsync();
+
+            if (editDialog.MadeChanges)
+            {
+                if (MenuItem.IsMenuItemValid(editDialog.NameInput, editDialog.CostInput, editDialog.TypeInput))
+                {
+                    editingItem.Cost = Convert.ToDecimal(editDialog.CostInput);
+                    editingItem.Description = editDialog.DescriptionInput;
+                    editingItem.Type = editDialog.TypeInput;
+
+                    bool successfulUpdate = DBHelper.UpdateMenuItem(editingItem);
+
+                    if (successfulUpdate)
+                    {
+                        string messageText = resourceLoader.GetString("Message_DatabaseUpdateSuccessful");
+                        MessageDialog successMessage = new MessageDialog(messageText);
+                        await successMessage.ShowAsync();
+                        SearchMenuItems();
+                    }
+                    else
+                    {
+                        string messageText = resourceLoader.GetString("Message_DatabaseUpdateFailed");
+                        MessageDialog failureMessage = new MessageDialog(messageText);
+                        await failureMessage.ShowAsync();
+                    }
+                }
+                else
+                {
+                    string messageText = resourceLoader.GetString("Errors_MenuItemInvalid");
+                    MessageDialog failureMessage = new MessageDialog(messageText);
+                    await failureMessage.ShowAsync();
+                }
+            }
+
+        }
     }
 }
 

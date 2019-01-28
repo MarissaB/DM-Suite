@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+﻿using Windows.UI.Xaml.Controls;
 
 namespace DM_Suite.Menu_Features
 {
@@ -22,14 +9,45 @@ namespace DM_Suite.Menu_Features
             InitializeComponent();
         }
 
+        public string NameInput { get; set; }
+        public string DescriptionInput { get; set; }
+        public string CostInput { get; set; }
+        public string TypeInput { get; set; }
+        public bool MadeChanges { get; private set; }
+
+        private void ContentDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Name.Text = NameInput;
+            Description.Text = DescriptionInput;
+            Cost.Text = CostInput;
+            foreach (RadioButton radioButton in TypeSelections.Children)
+            {
+                if (radioButton.Content.ToString() == TypeInput)
+                {
+                    radioButton.IsChecked = true;
+                }
+            }
+        }
+
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-
+            DescriptionInput = Description.Text;
+            CostInput = Cost.Text;
+            foreach (RadioButton radioButton in TypeSelections.Children)
+            {
+                if ((bool)radioButton.IsChecked)
+                {
+                    TypeInput = radioButton.Content.ToString();
+                    MadeChanges = true;
+                }
+            }
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            MadeChanges = false;
         }
 
+        
     }
 }

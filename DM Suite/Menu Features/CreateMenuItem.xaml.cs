@@ -10,7 +10,6 @@ namespace DM_Suite.Menu_Features
             InitializeComponent();
         }
 
-        private ResourceLoader resourceLoader = ResourceLoader.GetForCurrentView();
         public string NameInput { get; private set; }
         public string DescriptionInput { get; private set; }
         public string CostInput { get; private set; }

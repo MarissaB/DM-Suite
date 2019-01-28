@@ -155,7 +155,7 @@
                     <TextBlock x:Uid="Menu_Button_CreateMenuItem"/>
                 </StackPanel>
             </Button>
-            <Button x:Name="MenuItemEdit" VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="250" HorizontalAlignment="Center" IsEnabled="False">
+            <Button x:Name="MenuItemEdit" Click="EditMenuItem" VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="250" HorizontalAlignment="Center" IsEnabled="False">
                 <StackPanel Orientation="Horizontal">
                     <FontIcon x:Name="MenuItemEditIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE70F;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons" Opacity="0.6" />
                     <TextBlock x:Uid="Menu_Button_EditMenuItem" TextWrapping="Wrap"/>

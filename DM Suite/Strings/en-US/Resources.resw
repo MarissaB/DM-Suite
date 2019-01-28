@@ -236,9 +236,15 @@ You can also filter by Cost and Type.</value>
     <value>Deletion was successful!</value>
   </data>
   <data name="Message_DatabaseSaveFailed" xml:space="preserve">
-    <value>Save to database failed. View log file for more information.</value>
+    <value>Save failed. View log file for more information.</value>
   </data>
   <data name="Message_DatabaseSaveSuccessful" xml:space="preserve">
-    <value>Save to database was successful!</value>
+    <value>Save was successful!</value>
+  </data>
+  <data name="Message_DatabaseUpdateFailed" xml:space="preserve">
+    <value>Edit failed. View log file for more information.</value>
+  </data>
+  <data name="Message_DatabaseUpdateSuccessful" xml:space="preserve">
+    <value>Edit was successful!</value>
   </data>
 </root>

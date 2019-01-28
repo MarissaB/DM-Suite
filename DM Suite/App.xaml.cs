@@ -2,11 +2,8 @@
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Microsoft.Data.Sqlite;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using DM_Suite.Services.LoggingServices;
 using DM_Suite.Menu_Features;
 using MetroLog;
@@ -29,6 +26,7 @@ namespace DM_Suite
             using (SqliteConnection db = new SqliteConnection("Filename=sqliteSample.db"))
             {
                 db.Open();
+                // TODO: Use resource token for specific types (food, drink, treat)
                 string tableCommand = "CREATE TABLE IF NOT EXISTS `MENU_ITEMS` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL, `DESCRIPTION` TEXT, `COST` NUMERIC NOT NULL, `TYPE` TEXT NOT NULL DEFAULT 'FOOD' CHECK(TYPE IN ('FOOD', 'DRINK', 'TREAT')) )";
                 SqliteCommand createTable = new SqliteCommand(tableCommand, db);
                 try

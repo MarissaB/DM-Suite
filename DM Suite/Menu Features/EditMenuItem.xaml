@@ -9,7 +9,7 @@
     PrimaryButtonText="Save Changes"
     SecondaryButtonText="Cancel"
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick" Loaded="ContentDialog_Loaded">
 
     <Grid MinWidth="400">
         <Grid.ColumnDefinitions>
@@ -18,14 +18,14 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" Grid.Column="0" >
             <TextBlock x:Name="NameLabel" Text="Name:" Padding="0, 0, 0, 5"/>
-            <TextBox x:Name="Name" />
+            <TextBox x:Name="Name" IsReadOnly="True" />
             <TextBlock x:Name="DescriptionLabel" Text="Description:" Padding="0, 10, 0, 5"/>
             <TextBox x:Name="Description"/>
             <TextBlock x:Name="CostLabel" Text="Cost:" Padding="0, 10, 0, 5"/>
             <TextBox x:Name="Cost"/>
             
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Padding="20, 10, 20, 0" VerticalAlignment="Center">
+        <StackPanel x:Name="TypeSelections" Orientation="Vertical" Grid.Column="1" Padding="20, 10, 20, 0" VerticalAlignment="Center">
             <RadioButton x:Name="FoodOption" GroupName="TypeOptions" x:Uid="Menu_Food" Margin="24,0,0,0" IsChecked="True" />
             <RadioButton x:Name="DrinkOption" GroupName="TypeOptions" x:Uid="Menu_Drink" Margin="24,0,0,0" />
             <RadioButton x:Name="TreatOption" GroupName="TypeOptions" x:Uid="Menu_Treat" Margin="24,0,0,0" />
