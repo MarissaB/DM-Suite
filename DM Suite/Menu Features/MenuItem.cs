@@ -3,7 +3,6 @@ using MetroLog;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Windows.ApplicationModel.Resources;
 
 namespace DM_Suite.Menu_Features

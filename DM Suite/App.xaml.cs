@@ -33,7 +33,6 @@ namespace DM_Suite
             using (SqliteConnection db = new SqliteConnection("Filename=" + tavernDatabase + ".db"))
             {
                 db.Open();
-                // TODO: Use resource token for specific types (food, drink, treat)
                 string tableCommand = "CREATE TABLE IF NOT EXISTS `MENU_ITEMS` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL, `DESCRIPTION` TEXT, `COST` NUMERIC NOT NULL, `TYPE` TEXT NOT NULL DEFAULT '" + type2 + "' CHECK(TYPE IN ('" + type2 + "', '" + type1 + "', '" + type3 + "')) )";
                 SqliteCommand createTable = new SqliteCommand(tableCommand, db);
                 try
