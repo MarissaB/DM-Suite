@@ -1,7 +1,10 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using DM_Suite.Services.LoggingServices;
+using MetroLog;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Windows.ApplicationModel.Resources;
 
 namespace DM_Suite.Menu_Features
 {
@@ -11,6 +14,7 @@ namespace DM_Suite.Menu_Features
         public string Description { get; set; }
         public decimal Cost { get; set; }
         public string Type { get; set; }
+        private static readonly ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse();
 
         public MenuItem() { }
 
@@ -35,12 +39,12 @@ namespace DM_Suite.Menu_Features
                 }
                 catch (Exception error)
                 {
-                    Debug.WriteLine("Error mapping MenuItem from query: " + error.ToString());
+                    LoggingServices.Instance.WriteLine<MenuItem>("Error mapping MenuItem from query: " + error.Message, LogLevel.Info);
                 }
             }
             else
             {
-                Debug.WriteLine("Invalid query result for mapping MenuItem. Expected FieldCount of 5, found FieldCount of " + query.FieldCount);
+                LoggingServices.Instance.WriteLine<MenuItem>("Invalid query result for mapping MenuItem. Expected FieldCount of 5, found FieldCount of " + query.FieldCount, LogLevel.Info);
             }
         }
 
@@ -48,9 +52,9 @@ namespace DM_Suite.Menu_Features
         {
             List<string> types = new List<string>
             {
-                "Food",
-                "Drink",
-                "Treat"
+                resourceLoader.GetString("Menu_Drink/Content").ToUpper(),
+                resourceLoader.GetString("Menu_Food/Content").ToUpper(),
+                resourceLoader.GetString("Menu_Treat/Content").ToUpper()
             };
 
             // Check for an empty name and invalid type

@@ -4,13 +4,15 @@ using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DM_Suite.Menu_Features;
+using Windows.Storage;
 
-namespace DM_Suite
+namespace DM_Suite.Menu_Features
 {
     public class DBHelper
     {
-        public static SqliteConnection databaseFile = new SqliteConnection("Filename=sqliteSample.db");
+        private static readonly string DatabaseName = ApplicationData.Current.LocalSettings.Values["TavernMenuDatabaseName"].ToString();
+
+        public static SqliteConnection databaseFile = new SqliteConnection("Filename=" + DatabaseName + ".db");
 
         public static bool AddMenuItem(MenuItem menuItem)
         {

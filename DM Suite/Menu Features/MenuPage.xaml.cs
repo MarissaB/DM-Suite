@@ -404,7 +404,7 @@ namespace DM_Suite.Menu_Features
             string itemName = createDialog.NameInput;
             string itemDescription = createDialog.DescriptionInput;
             string itemCost = createDialog.CostInput;
-            string itemType = createDialog.TypeInput;
+            string itemType = createDialog.TypeInput.ToUpper();
 
             if (MenuItem.IsMenuItemValid(itemName, itemCost, itemType))
             {

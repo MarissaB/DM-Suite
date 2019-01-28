@@ -1,4 +1,6 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using DM_Suite.Services.LoggingServices;
+using MetroLog;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,12 +30,12 @@ namespace DM_Suite.Menu_Features
                 }
                 catch (Exception error)
                 {
-                    Debug.WriteLine("Error mapping Menu from query: " + error.ToString());
+                    LoggingServices.Instance.WriteLine<Menu>("Error mapping Menu from query: " + error.Message, LogLevel.Info);
                 }
             }
             else
             {
-                Debug.WriteLine("Invalid query result for mapping Menu. Expected FieldCount of 4, found FieldCount of " + query.FieldCount);
+                LoggingServices.Instance.WriteLine<Menu>("Invalid query result for mapping Menu. Expected FieldCount of 4, found FieldCount of " + query.FieldCount, LogLevel.Info);
             }
         }
 

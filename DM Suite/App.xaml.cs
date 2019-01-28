@@ -7,6 +7,8 @@ using Microsoft.Data.Sqlite;
 using DM_Suite.Services.LoggingServices;
 using DM_Suite.Menu_Features;
 using MetroLog;
+using Windows.Storage;
+using Windows.ApplicationModel.Resources;
 
 namespace DM_Suite
 {
@@ -23,11 +25,16 @@ namespace DM_Suite
         {
             InitializeComponent();
             Suspending += OnSuspending;
-            using (SqliteConnection db = new SqliteConnection("Filename=sqliteSample.db"))
+            string tavernDatabase = localSettings.Values["TavernMenuDatabaseName"] as string;
+            string type1 = resourceLoader.GetString("Menu_Drink/Content").ToUpper();
+            string type2 = resourceLoader.GetString("Menu_Food/Content").ToUpper();
+            string type3 = resourceLoader.GetString("Menu_Treat/Content").ToUpper();
+
+            using (SqliteConnection db = new SqliteConnection("Filename=" + tavernDatabase + ".db"))
             {
                 db.Open();
                 // TODO: Use resource token for specific types (food, drink, treat)
-                string tableCommand = "CREATE TABLE IF NOT EXISTS `MENU_ITEMS` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL, `DESCRIPTION` TEXT, `COST` NUMERIC NOT NULL, `TYPE` TEXT NOT NULL DEFAULT 'FOOD' CHECK(TYPE IN ('FOOD', 'DRINK', 'TREAT')) )";
+                string tableCommand = "CREATE TABLE IF NOT EXISTS `MENU_ITEMS` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL, `DESCRIPTION` TEXT, `COST` NUMERIC NOT NULL, `TYPE` TEXT NOT NULL DEFAULT '" + type2 + "' CHECK(TYPE IN ('" + type2 + "', '" + type1 + "', '" + type3 + "')) )";
                 SqliteCommand createTable = new SqliteCommand(tableCommand, db);
                 try
                 {
@@ -40,6 +47,9 @@ namespace DM_Suite
             }
         }
 
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse();
+
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used such as when the application is launched to open a specific file.
@@ -49,6 +59,8 @@ namespace DM_Suite
         {
             // Log application start
             LoggingServices.Instance.WriteLine<App>("Application starting...", LogLevel.Info);
+            localSettings.Values["TavernMenuDatabaseName"] = "TavernMenuDatabase";
+
 
             if (!(Window.Current.Content is RootControl rootControl))
             {
