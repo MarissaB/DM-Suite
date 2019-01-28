@@ -10,9 +10,7 @@ namespace DM_Suite.Menu_Features
 {
     public class DBHelper
     {
-        private static readonly string DatabaseName = ApplicationData.Current.LocalSettings.Values["TavernMenuDatabaseName"].ToString();
-
-        public static SqliteConnection databaseFile = new SqliteConnection("Filename=" + DatabaseName + ".db");
+        public static SqliteConnection databaseFile = new SqliteConnection("Filename=DMSuiteDatabase.db");
 
         public static bool AddMenuItem(MenuItem menuItem)
         {

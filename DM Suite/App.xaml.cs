@@ -25,12 +25,13 @@ namespace DM_Suite
         {
             InitializeComponent();
             Suspending += OnSuspending;
-            string tavernDatabase = localSettings.Values["TavernMenuDatabaseName"] as string;
+            string databaseName = "DMSuiteDatabase";
+
             string type1 = resourceLoader.GetString("Menu_Drink/Content").ToUpper();
             string type2 = resourceLoader.GetString("Menu_Food/Content").ToUpper();
             string type3 = resourceLoader.GetString("Menu_Treat/Content").ToUpper();
 
-            using (SqliteConnection db = new SqliteConnection("Filename=" + tavernDatabase + ".db"))
+            using (SqliteConnection db = new SqliteConnection("Filename=" + databaseName + ".db"))
             {
                 db.Open();
                 string tableCommand = "CREATE TABLE IF NOT EXISTS `MENU_ITEMS` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL, `DESCRIPTION` TEXT, `COST` NUMERIC NOT NULL, `TYPE` TEXT NOT NULL DEFAULT '" + type2 + "' CHECK(TYPE IN ('" + type2 + "', '" + type1 + "', '" + type3 + "')) )";
@@ -46,7 +47,6 @@ namespace DM_Suite
             }
         }
 
-        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse();
 
         /// <summary>
@@ -58,8 +58,6 @@ namespace DM_Suite
         {
             // Log application start
             LoggingServices.Instance.WriteLine<App>("Application starting...", LogLevel.Info);
-            localSettings.Values["TavernMenuDatabaseName"] = "TavernMenuDatabase";
-
 
             if (!(Window.Current.Content is RootControl rootControl))
             {
