@@ -27,7 +27,7 @@ namespace DM_Suite.Menu_Features
             unsavedChanges = false;
 
             OptionsAllCheckBox.IsChecked = true;
-            MenuSearchResults.ItemsSource = DBHelper.SearchMenus(string.Empty, string.Empty);
+            MenuSearchResults.ItemsSource = MenuDBHelper.SearchMenus(string.Empty, string.Empty);
             MenuItemSearchResults.ItemsSource = new List<MenuItem>(); // Give it a blank list to get the headers to show.
             RefreshCurrentMenuInPage();
             
@@ -120,7 +120,7 @@ namespace DM_Suite.Menu_Features
 
         private void SearchMenuItems()
         {
-            List<MenuItem> searchResults = DBHelper.SearchMenuItems(InputMenuItemSearch_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
+            List<MenuItem> searchResults = MenuDBHelper.SearchMenuItems(InputMenuItemSearch_Box.Text, GetTypes(), CostMin.Text, CostMax.Text);
             MenuItemSearchResults.ItemsSource = searchResults;
             MenuItemResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
             MenuItemResultsCount.Visibility = Visibility.Visible;
@@ -128,7 +128,7 @@ namespace DM_Suite.Menu_Features
 
         private void SearchMenus()
         {
-            List<Menu> searchResults = DBHelper.SearchMenus(InputMenuNameSearch_Box.Text, InputMenuLocationSearch_Box.Text);
+            List<Menu> searchResults = MenuDBHelper.SearchMenus(InputMenuNameSearch_Box.Text, InputMenuLocationSearch_Box.Text);
             MenuSearchResults.ItemsSource = searchResults;
             MenuResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
             MenuResultsCount.Visibility = Visibility.Visible;
@@ -318,15 +318,15 @@ namespace DM_Suite.Menu_Features
             if (Menu.IsMenuValid(currentMenu))
             {
                 bool successfulSave;
-                int menuCount = DBHelper.SearchMenus(currentMenu.Name, string.Empty).Count;
+                int menuCount = MenuDBHelper.SearchMenus(currentMenu.Name, string.Empty).Count;
                 if (menuCount == 0) // Menu with this name doesn't exist yet, so we add it
                 {
-                    successfulSave = DBHelper.AddMenu(currentMenu);
+                    successfulSave = MenuDBHelper.AddMenu(currentMenu);
                     unsavedChanges = !successfulSave;
                 }
                 else // Menu with this name exists, so we update it instead of adding since names are unique
                 {
-                    successfulSave = DBHelper.UpdateMenu(currentMenu);
+                    successfulSave = MenuDBHelper.UpdateMenu(currentMenu);
                     unsavedChanges = !successfulSave;
                 }
                 unsavedChanges = !successfulSave;
@@ -411,9 +411,9 @@ namespace DM_Suite.Menu_Features
                 MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, itemType);
                 bool successfulSave = false;
 
-                if(string.IsNullOrEmpty(DBHelper.SearchMenuItem(newItem).Name)) // check if item already exists in database
+                if(string.IsNullOrEmpty(MenuDBHelper.SearchMenuItem(newItem).Name)) // check if item already exists in database
                 { 
-                    successfulSave = DBHelper.AddMenuItem(newItem);
+                    successfulSave = MenuDBHelper.AddMenuItem(newItem);
                 }
                 
                 if (successfulSave)
@@ -468,7 +468,7 @@ namespace DM_Suite.Menu_Features
             bool continueSafely = await ConfirmDeletion();
             if (continueSafely)
             {
-                bool isSuccessful = DBHelper.DeleteMenu((Menu)MenuSearchResults.SelectedItem);
+                bool isSuccessful = MenuDBHelper.DeleteMenu((Menu)MenuSearchResults.SelectedItem);
                 if (isSuccessful)
                 {
                     string messageText = resourceLoader.GetString("Message_DatabaseDeleteSuccessful");
@@ -519,7 +519,7 @@ namespace DM_Suite.Menu_Features
                 int successes = 0;
                 foreach (object selected in MenuItemSearchResults.SelectedItems)
                 {
-                    bool isSuccessful = DBHelper.DeleteMenuItem((MenuItem)selected);
+                    bool isSuccessful = MenuDBHelper.DeleteMenuItem((MenuItem)selected);
                     if (isSuccessful)
                     {
                         successes++;
@@ -563,7 +563,7 @@ namespace DM_Suite.Menu_Features
                     editingItem.Description = editDialog.DescriptionInput;
                     editingItem.Type = editDialog.TypeInput;
 
-                    bool successfulUpdate = DBHelper.UpdateMenuItem(editingItem);
+                    bool successfulUpdate = MenuDBHelper.UpdateMenuItem(editingItem);
 
                     if (successfulUpdate)
                     {

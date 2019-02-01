@@ -4,13 +4,47 @@ using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.Storage;
+using Windows.ApplicationModel.Resources;
 
 namespace DM_Suite.Menu_Features
 {
-    public class DBHelper
+    public class MenuDBHelper
     {
-        public static SqliteConnection databaseFile = new SqliteConnection("Filename=DMSuiteDatabase.db");
+        public static SqliteConnection DatabaseFile { get; set; }
+
+        public static bool CreateDatabaseTables(string databaseName)
+        {
+            DatabaseFile = new SqliteConnection("Filename=" + databaseName + ".db");
+
+            bool isSuccessful = false;
+            ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse();
+            string type1 = resourceLoader.GetString("Menu_Drink/Content").ToUpper();
+            string type2 = resourceLoader.GetString("Menu_Food/Content").ToUpper();
+            string type3 = resourceLoader.GetString("Menu_Treat/Content").ToUpper();
+
+            using (SqliteConnection db = DatabaseFile)
+            {
+                db.Open();
+                
+                string menuItemsTableCommand = "CREATE TABLE IF NOT EXISTS `MENU_ITEMS` ( `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL UNIQUE, `DESCRIPTION` TEXT, `COST` NUMERIC NOT NULL, `TYPE` TEXT NOT NULL DEFAULT '" + type2 + "' CHECK(TYPE IN ( '" + type2 + "' , '" + type1 + "' , '" + type3 + "' )) )";
+                SqliteCommand createMenuItemsTable = new SqliteCommand(menuItemsTableCommand, db);
+
+                string menuTableCommand = "CREATE TABLE `MENUS` ( `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL UNIQUE, `LOCATION` TEXT, `CONTENTS` TEXT )";
+                SqliteCommand createMenuTable = new SqliteCommand(menuTableCommand, db);
+                try
+                {
+                    createMenuItemsTable.ExecuteReader();
+                    createMenuTable.ExecuteReader();
+                    isSuccessful = true;
+                }
+                catch (SqliteException e)
+                {
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Sqlite Database Tables for MENU and MENU_ITEMS could not be created. " + e.Message, LogLevel.Error);
+                }
+            }
+
+            return isSuccessful;
+        }
 
         public static bool AddMenuItem(MenuItem menuItem)
         {
@@ -23,7 +57,7 @@ namespace DM_Suite.Menu_Features
             insertCommand.Parameters.AddWithValue("@type", menuItem.Type.ToUpper());
             insertCommand.CommandText = commandText;
 
-            using (SqliteConnection db = databaseFile)
+            using (SqliteConnection db = DatabaseFile)
             {
                 db.Open();
                 insertCommand.Connection = db;
@@ -31,14 +65,14 @@ namespace DM_Suite.Menu_Features
                 SqliteDataReader query;
                 try
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting insert...\t\t" + insertCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting insert...\t\t" + insertCommand.CommandText, LogLevel.Info);
                     query = insertCommand.ExecuteReader();
                     isSuccessful = true;
-                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully saved menu item " + menuItem.Name, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Successfully saved menu item " + menuItem.Name, LogLevel.Info);
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Failed insert...\t\t" + error.Message, LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Failed insert...\t\t" + error.Message, LogLevel.Error);
                 }
                 db.Close();
             }
@@ -57,7 +91,7 @@ namespace DM_Suite.Menu_Features
             updateCommand.Parameters.AddWithValue("@type", menuItem.Type.ToUpper());
             updateCommand.CommandText = commandText;
 
-            using (SqliteConnection db = databaseFile)
+            using (SqliteConnection db = DatabaseFile)
             {
                 db.Open();
                 updateCommand.Connection = db;
@@ -65,14 +99,14 @@ namespace DM_Suite.Menu_Features
                 SqliteDataReader query;
                 try
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting update...\t\t" + updateCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting update...\t\t" + updateCommand.CommandText, LogLevel.Info);
                     query = updateCommand.ExecuteReader();
                     isSuccessful = true;
-                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully updated menu " + menuItem.Name, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Successfully updated menu " + menuItem.Name, LogLevel.Info);
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Failed update...\t\t" + error.Message, LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Failed update...\t\t" + error.Message, LogLevel.Error);
                 }
                 db.Close();
             }
@@ -88,7 +122,7 @@ namespace DM_Suite.Menu_Features
             deleteCommand.Parameters.AddWithValue("@name", menuItem.Name);
             deleteCommand.CommandText = commandText;
 
-            using (SqliteConnection db = databaseFile)
+            using (SqliteConnection db = DatabaseFile)
             {
                 db.Open();
                 deleteCommand.Connection = db;
@@ -96,14 +130,14 @@ namespace DM_Suite.Menu_Features
                 SqliteDataReader query;
                 try
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting delete...\t\t" + deleteCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting delete...\t\t" + deleteCommand.CommandText, LogLevel.Info);
                     query = deleteCommand.ExecuteReader();
                     isSuccessful = true;
-                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully deleted menu item " + menuItem.Name, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Successfully deleted menu item " + menuItem.Name, LogLevel.Info);
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Failed delete...\t\t" + error.Message, LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Failed delete...\t\t" + error.Message, LogLevel.Error);
                 }
                 db.Close();
             }
@@ -119,7 +153,7 @@ namespace DM_Suite.Menu_Features
             selectCommand.Parameters.AddWithValue("@name", menuItem.Name);
             selectCommand.CommandText = commandText;
 
-            using (SqliteConnection db = databaseFile)
+            using (SqliteConnection db = DatabaseFile)
             {
                 db.Open();
                 selectCommand.Connection = db;
@@ -127,9 +161,9 @@ namespace DM_Suite.Menu_Features
                 SqliteDataReader query;
                 try
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting search...\t\t" + selectCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting search...\t\t" + selectCommand.CommandText, LogLevel.Info);
                     query = selectCommand.ExecuteReader();
-                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully found menu item " + menuItem.Name, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Successfully found menu item " + menuItem.Name, LogLevel.Info);
                     while (query.Read())
                     {
                         resultItem = new MenuItem(query);
@@ -137,7 +171,7 @@ namespace DM_Suite.Menu_Features
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Failed search...\t\t" + error.Message, LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Failed search...\t\t" + error.Message, LogLevel.Error);
                 }
                 
                 db.Close();
@@ -173,7 +207,7 @@ namespace DM_Suite.Menu_Features
             List<MenuItem> results = new List<MenuItem>();
             foreach (string type in types)
             {
-                using (SqliteConnection db = databaseFile)
+                using (SqliteConnection db = DatabaseFile)
                 {
                     db.Open();
                     selectCommand.Connection = db;
@@ -183,13 +217,13 @@ namespace DM_Suite.Menu_Features
                     SqliteDataReader query;
                     try
                     {
-                        LoggingServices.Instance.WriteLine<DBHelper>("Attempting query...\t\t" + selectCommand.CommandText, LogLevel.Info);
-                        LoggingServices.Instance.WriteLine<DBHelper>(logger + logger2, LogLevel.Info);
+                        LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting query...\t\t" + selectCommand.CommandText, LogLevel.Info);
+                        LoggingServices.Instance.WriteLine<MenuDBHelper>(logger + logger2, LogLevel.Info);
                         query = selectCommand.ExecuteReader();
                     }
                     catch (SqliteException error)
                     {
-                        LoggingServices.Instance.WriteLine<DBHelper>("Error fetching database entries: " + error.Message, LogLevel.Error);
+                        LoggingServices.Instance.WriteLine<MenuDBHelper>("Error fetching database entries: " + error.Message, LogLevel.Error);
                         return results;
                     }
                     while (query.Read())
@@ -203,7 +237,7 @@ namespace DM_Suite.Menu_Features
                 selectCommand.Connection = null;
             }
             results = results.OrderBy(item => item.Name).ToList();
-            LoggingServices.Instance.WriteLine<DBHelper>("Found results: " + results.Count, LogLevel.Info);
+            LoggingServices.Instance.WriteLine<MenuDBHelper>("Found results: " + results.Count, LogLevel.Info);
             return results;
         }
 
@@ -217,7 +251,7 @@ namespace DM_Suite.Menu_Features
             insertCommand.Parameters.AddWithValue("@contents", menu.ExportMenuItemsToXML());
             insertCommand.CommandText = commandText;
 
-            using (SqliteConnection db = databaseFile)
+            using (SqliteConnection db = DatabaseFile)
             {
                 db.Open();
                 insertCommand.Connection = db;
@@ -225,14 +259,14 @@ namespace DM_Suite.Menu_Features
                 SqliteDataReader query;
                 try
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting insert...\t\t" + insertCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting insert...\t\t" + insertCommand.CommandText, LogLevel.Info);
                     query = insertCommand.ExecuteReader();
                     isSuccessful = true;
-                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully saved menu " + menu.Name, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Successfully saved menu " + menu.Name, LogLevel.Info);
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Failed insert...\t\t" + error.Message, LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Failed insert...\t\t" + error.Message, LogLevel.Error);
                 }
                 db.Close();
             }
@@ -250,7 +284,7 @@ namespace DM_Suite.Menu_Features
             updateCommand.Parameters.AddWithValue("@contents", menu.ExportMenuItemsToXML());
             updateCommand.CommandText = commandText;
 
-            using (SqliteConnection db = databaseFile)
+            using (SqliteConnection db = DatabaseFile)
             {
                 db.Open();
                 updateCommand.Connection = db;
@@ -258,14 +292,14 @@ namespace DM_Suite.Menu_Features
                 SqliteDataReader query;
                 try
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting update...\t\t" + updateCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting update...\t\t" + updateCommand.CommandText, LogLevel.Info);
                     query = updateCommand.ExecuteReader();
                     isSuccessful = true;
-                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully updated menu " + menu.Name, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Successfully updated menu " + menu.Name, LogLevel.Info);
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Failed update...\t\t" + error.Message, LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Failed update...\t\t" + error.Message, LogLevel.Error);
                 }
                 db.Close();
             }
@@ -281,7 +315,7 @@ namespace DM_Suite.Menu_Features
             deleteCommand.Parameters.AddWithValue("@name", menu.Name);
             deleteCommand.CommandText = commandText;
 
-            using (SqliteConnection db = databaseFile)
+            using (SqliteConnection db = DatabaseFile)
             {
                 db.Open();
                 deleteCommand.Connection = db;
@@ -289,14 +323,14 @@ namespace DM_Suite.Menu_Features
                 SqliteDataReader query;
                 try
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting delete...\t\t" + deleteCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting delete...\t\t" + deleteCommand.CommandText, LogLevel.Info);
                     query = deleteCommand.ExecuteReader();
                     isSuccessful = true;
-                    LoggingServices.Instance.WriteLine<DBHelper>("Successfully deleted menu " + menu.Name, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Successfully deleted menu " + menu.Name, LogLevel.Info);
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Failed delete...\t\t" + error.Message, LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Failed delete...\t\t" + error.Message, LogLevel.Error);
                 }
                 db.Close();
             }
@@ -315,7 +349,7 @@ namespace DM_Suite.Menu_Features
             selectCommand.CommandText = commandText;
             List<Menu> results = new List<Menu>();
             
-            using (SqliteConnection db = databaseFile)
+            using (SqliteConnection db = DatabaseFile)
             {
                 db.Open();
                 selectCommand.Connection = db;
@@ -323,13 +357,13 @@ namespace DM_Suite.Menu_Features
                 SqliteDataReader query;
                 try
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Attempting query...\t\t" + selectCommand.CommandText, LogLevel.Info);
-                    LoggingServices.Instance.WriteLine<DBHelper>(logger, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Attempting query...\t\t" + selectCommand.CommandText, LogLevel.Info);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>(logger, LogLevel.Info);
                     query = selectCommand.ExecuteReader();
                 }
                 catch (SqliteException error)
                 {
-                    LoggingServices.Instance.WriteLine<DBHelper>("Error fetching database entries: " + error.Message, LogLevel.Error);
+                    LoggingServices.Instance.WriteLine<MenuDBHelper>("Error fetching database entries: " + error.Message, LogLevel.Error);
                     return results;
                 }
                 while (query.Read())
@@ -343,7 +377,7 @@ namespace DM_Suite.Menu_Features
             selectCommand.Connection = null;
             
             results = results.OrderBy(item => item.Name).ToList();
-            LoggingServices.Instance.WriteLine<DBHelper>("Found results: " + results.Count, LogLevel.Info);
+            LoggingServices.Instance.WriteLine<MenuDBHelper>("Found results: " + results.Count, LogLevel.Info);
             return results;
         }
     }

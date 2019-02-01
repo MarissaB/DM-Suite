@@ -98,7 +98,7 @@
     <Compile Include="ConfirmDelete.xaml.cs">
       <DependentUpon>ConfirmDelete.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Menu Features\DBHelper.cs" />
+    <Compile Include="Menu Features\MenuDBHelper.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="Menu Features\EditMenuItem.xaml.cs">
       <DependentUpon>EditMenuItem.xaml</DependentUpon>

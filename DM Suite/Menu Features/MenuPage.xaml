@@ -27,7 +27,7 @@
             <StackPanel Orientation="Vertical" Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" BorderThickness="2" BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                     <TextBlock x:Uid="Menu_Name" Margin="10,0,10,0" VerticalAlignment="Center"/>
-                    <TextBox x:Name="InputMenuNameSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False" />
+                    <TextBox x:Name="InputMenuNameSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False" Height="25" />
                     <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExecuteSearch" x:Name="MenuSearch">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" />
@@ -38,17 +38,17 @@
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE894;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" />
                         </StackPanel>
                     </Button>
+                    <TextBlock x:Name="MenuResultsCount" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource CheckBoxContentDisabledForegroundThemeBrush}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                     <TextBlock x:Uid="Menu_Location" Margin="10,0,10,0" VerticalAlignment="Center"/>
-                    <TextBox x:Name="InputMenuLocationSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False"/>
+                    <TextBox x:Name="InputMenuLocationSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False" Height="25"/>
                     <Button x:Name="MenuDelete" Click="DeleteSelectedMenu" VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="150" HorizontalAlignment="Center" IsEnabled="False">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon x:Name="MenuDeleteIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons" Opacity="0.6"/>
                             <TextBlock x:Uid="Menu_Button_DeleteMenu" TextWrapping="Wrap"/>
                         </StackPanel>
                     </Button>
-                    <TextBlock x:Name="MenuResultsCount" Margin="30,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource CheckBoxContentDisabledForegroundThemeBrush}"/>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
