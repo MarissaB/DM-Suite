@@ -1,4 +1,5 @@
 # Universal Windows Platform
+
 # Build a Universal Windows Platform project using Visual Studio.
 # Add steps that test and distribute an app, save build artifacts, and more:
 # https://aka.ms/yaml
@@ -28,6 +29,21 @@ steps:
   displayName: 'Download CA certificate'
   inputs:
     secureFile: 'DM Suite_TemporaryKey.pfx'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      $pfxpath = 'DM Suite_TemporaryKey.pfx'
+      $password = '$(keypassword)'
+      
+      Add-Type -AssemblyName System.Security
+      $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+      $cert.Import($pfxpath, $password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]"PersistKeySet")
+      $store = new-object system.security.cryptography.X509Certificates.X509Store -argumentlist "MY", CurrentUser
+      $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
+      $store.Add($cert)
+      $store.Close()
 
 - task: VSBuild@1
   inputs:
