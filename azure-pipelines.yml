@@ -26,7 +26,7 @@ steps:
   name: signingCert
   displayName: 'Download CA certificate'
   inputs:
-    secureFile: 'DM Suite_1.0.1.0_x86_x64_arm.cer'
+    secureFile: 'DM Suite_TemporaryKey.pfx'
 
 - task: VSBuild@1
   inputs:
