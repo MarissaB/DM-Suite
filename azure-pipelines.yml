@@ -13,7 +13,7 @@ pool:
 variables:
   solution: '**/*.sln'
   buildPlatform: 'x86|x64'
-  buildConfiguration: 'Debug'
+  buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
 
 steps:
@@ -27,7 +27,8 @@ steps:
   name: signingCert
   displayName: 'Download CA certificate'
   inputs:
-    secureFile: 'DM Suite_TemporaryKey.pfx'
+    secureFile: 'DM_Suite_Key.pfx'
+
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
