@@ -29,31 +29,13 @@ steps:
   inputs:
     secureFile: 'DM_Suite_Key.pfx'
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your powershell commands here.
-      
-      Write-Host $env:DOWNLOADSECUREFILE_SECUREFILEPATH
-      
-      function GetThumbprintPFX {
-       param([string] $CertificatePath, [string]$Password)
-       $certificateObject = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
-       $certificateObject.Import($CertificatePath, $Password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::DefaultKeySet)
-       $thumbprint = $certificateObject.Thumbprint
-       return $thumbprint  
-      }
-      
-      $thumbprint = GetThumbprintPFX -CertificatePath $env:DOWNLOADSECUREFILE_SECUREFILEPATH -Password '$(sSecStrPassword)'
-      Write-Host "$thumbprint"
 
 - task: VSBuild@1
   inputs:
     platform: '$(buildPlatform)'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxPackageSigningEnabled=true /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:PackageCertificateThumbprint="" /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=SideloadOnly'
+    msbuildArgs: '/p:AppxPackageSigningEnabled=true /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:PackageCertificateThumbprint="D950277782054E65725D1FC805B5780357F7FCA4" /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=SideloadOnly /p:PackageCertificatePassword="$(sSecStrPassword)"'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
