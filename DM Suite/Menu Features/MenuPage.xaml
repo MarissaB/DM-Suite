@@ -13,11 +13,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*" MinWidth="700"/>
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
         <TextBlock x:Uid="Heading_Menu" Grid.Row="0" Grid.Column="0" FontSize="24" Margin="0,0,0,10"/>
@@ -93,8 +93,8 @@
         </StackPanel>
         <!--#endregion-->
         <!--#region Current Menu -->
-        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1" Padding="5,5,5,5">
-            <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" MinHeight="350" IsReadOnly="True" AutoGenerateColumns="True" SelectionMode="Extended" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch"/>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1" Padding="5,5,5,5" MinHeight="400">
+            <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" MinHeight="350" IsReadOnly="True" AutoGenerateColumns="True" SelectionMode="Extended" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="50">
                 <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="AddToCurrentMenu">
                     <StackPanel Orientation="Horizontal">

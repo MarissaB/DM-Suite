@@ -16,7 +16,7 @@ namespace DM_Suite.Initiative_Features
             Sessions.ItemsSource = InitiativeDBHelper.GetSessionsList();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RefreshSessionList_Click(object sender, RoutedEventArgs e)
         {
             Sessions.ItemsSource = InitiativeDBHelper.GetSessionsList();
         }

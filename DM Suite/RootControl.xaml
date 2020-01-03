@@ -28,10 +28,7 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <Frame x:Name="rootFrame" HorizontalAlignment="Stretch" Margin="10,10,10,10" />
                 </ScrollViewer>
             </Grid>

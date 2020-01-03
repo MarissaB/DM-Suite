@@ -40,7 +40,7 @@ namespace DM_Suite.Initiative_Features
             {
                 db.Open();
 
-                string initiativeTableCommand = "CREATE TABLE `INITIATIVE` ( `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL, `INITIATIVE` INTEGER NOT NULL, `ALIVE` INTEGER NOT NULL DEFAULT 1 CHECK(ALIVE IN ( 0 , 1 )), `SESSION` TEXT NOT NULL )";
+                string initiativeTableCommand = "CREATE TABLE `INITIATIVE` ( `ID` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL, `INITIATIVE` INTEGER NOT NULL, `ACTIVE` INTEGER NOT NULL DEFAULT 1 CHECK(ACTIVE IN ( 0 , 1 )), `SESSION` TEXT NOT NULL )";
                 SqliteCommand createInitiativeTable = new SqliteCommand(initiativeTableCommand, db);
 
                 try
@@ -60,11 +60,11 @@ namespace DM_Suite.Initiative_Features
         public static bool AddParticipant(Participant participant)
         {
             bool isSuccessful = false;
-            string commandText = "Insert into INITIATIVE (NAME, INITIATIVE, ALIVE, SESSION) VALUES(@name, @initiative, @alive, @session)";
+            string commandText = "Insert into INITIATIVE (NAME, INITIATIVE, ACTIVE, SESSION) VALUES(@name, @initiative, @active, @session)";
             SqliteCommand insertCommand = new SqliteCommand();
             insertCommand.Parameters.AddWithValue("@name", participant.Name);
             insertCommand.Parameters.AddWithValue("@initiative", participant.Initiative);
-            insertCommand.Parameters.AddWithValue("@alive", ConvertBoolToInt(participant.Alive));
+            insertCommand.Parameters.AddWithValue("@active", ConvertBoolToInt(participant.Active));
             insertCommand.Parameters.AddWithValue("@session", participant.Session);
             insertCommand.CommandText = commandText;
 
@@ -94,11 +94,11 @@ namespace DM_Suite.Initiative_Features
         public static bool UpdateParticipant(Participant participant)
         {
             bool isSuccessful = false;
-            string commandText = "Update INITIATIVE SET Initiative = @initiative, Alive = @alive, WHERE Name = @name AND Session = @session";
+            string commandText = "Update INITIATIVE SET Initiative = @initiative, Active = @active, WHERE Name = @name AND Session = @session";
             SqliteCommand updateCommand = new SqliteCommand();
             updateCommand.Parameters.AddWithValue("@name", participant.Name);
             updateCommand.Parameters.AddWithValue("@initiative", participant.Initiative);
-            updateCommand.Parameters.AddWithValue("@alive", ConvertBoolToInt(participant.Alive));
+            updateCommand.Parameters.AddWithValue("@active", ConvertBoolToInt(participant.Active));
             updateCommand.Parameters.AddWithValue("@session", participant.Session);
             updateCommand.CommandText = commandText;
 

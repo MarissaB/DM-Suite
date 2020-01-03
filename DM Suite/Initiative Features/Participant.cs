@@ -9,7 +9,7 @@ namespace DM_Suite.Initiative_Features
     {
         public string Name { get; set; }
         public int Initiative { get; set; }
-        public bool Alive { get; set; }
+        public bool Active { get; set; }
         public string Session { get; set; }
 
         public Participant() { }
@@ -24,11 +24,11 @@ namespace DM_Suite.Initiative_Features
                     Initiative = Convert.ToInt32(query.GetValue(2));
                     if (Convert.ToInt32(query.GetValue(3)) > 0)
                     {
-                        Alive = true;
+                        Active = true;
                     }
                     else
                     {
-                        Alive = false;
+                        Active = false;
                     }
                     Session = query.GetValue(4).ToString();
                 }
@@ -41,11 +41,6 @@ namespace DM_Suite.Initiative_Features
             {
                 LoggingServices.Instance.WriteLine<Participant>("Invalid query result for mapping Participant. Expected FieldCount of 5, found FieldCount of " + query.FieldCount, LogLevel.Info);
             }
-        }
-
-        public void Kill()
-        {
-            Alive = false;
         }
 
     }

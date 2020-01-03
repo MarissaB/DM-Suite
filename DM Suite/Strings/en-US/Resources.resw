@@ -144,6 +144,9 @@
   <data name="Generic_SelectAll.Content" xml:space="preserve">
     <value>Select All</value>
   </data>
+  <data name="Heading_Initiative.Text" xml:space="preserve">
+    <value>Initiative Tracker</value>
+  </data>
   <data name="Heading_Menu.Text" xml:space="preserve">
     <value>Menu Editor</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="Icons.Margin" xml:space="preserve">
     <value>0, 0, 10, 0</value>
+  </data>
+  <data name="Initiative_SelectSession.Text" xml:space="preserve">
+    <value>Select Session:</value>
   </data>
   <data name="Menu_Add.Text" xml:space="preserve">
     <value>Add Selected Search Row(s)</value>
