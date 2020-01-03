@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Data.Sqlite;
 using DM_Suite.Services.LoggingServices;
 using DM_Suite.Menu_Features;
+using DM_Suite.Initiative_Features;
 using MetroLog;
 using Windows.Storage;
 using Windows.ApplicationModel.Resources;
@@ -30,6 +31,12 @@ namespace DM_Suite
             if (menuTablesCreated)
             {
                 LoggingServices.Instance.WriteLine<App>("Sqlite Database Tables for MENU and MENU_ITEMS were created.", LogLevel.Info);
+            }
+
+            bool initiativeTableCreated = InitiativeDBHelper.CreateDatabaseTable(databaseName);
+            if (initiativeTableCreated)
+            {
+                LoggingServices.Instance.WriteLine<App>("Sqlite Database Tables for INITIATIVE was created.", LogLevel.Info);
             }
 
             //string type1 = resourceLoader.GetString("Menu_Drink/Content").ToUpper();

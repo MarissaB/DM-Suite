@@ -1,0 +1,18 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Custom="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    x:Class="DM_Suite.HomeScreen"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+            <Custom:HeaderedTextBlock x:Name="Heading" HorizontalAlignment="Center"/>
+            <TextBlock x:Uid="Home_Subheading"/>
+            <TextBlock x:Uid="Home_NavigationHint"/>
+        </StackPanel>
+    </Grid>
+</Page>

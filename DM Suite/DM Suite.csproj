@@ -110,6 +110,14 @@
     <Compile Include="ConfirmDelete.xaml.cs">
       <DependentUpon>ConfirmDelete.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HomeScreen.xaml.cs">
+      <DependentUpon>HomeScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Initiative Features\InitiativeDBHelper.cs" />
+    <Compile Include="Initiative Features\InitiativePage.xaml.cs">
+      <DependentUpon>InitiativePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Initiative Features\Participant.cs" />
     <Compile Include="Menu Features\MenuDBHelper.cs" />
     <Compile Include="FileHelper.cs" />
     <Compile Include="Menu Features\EditMenuItem.xaml.cs">
@@ -158,6 +166,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="ConfirmDelete.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HomeScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Initiative Features\InitiativePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

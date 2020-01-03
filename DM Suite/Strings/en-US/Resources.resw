@@ -150,6 +150,15 @@
   <data name="Heading_Results" xml:space="preserve">
     <value>Results: </value>
   </data>
+  <data name="Home_Heading" xml:space="preserve">
+    <value>Welcome to the DM Suite</value>
+  </data>
+  <data name="Home_NavigationHint.Text" xml:space="preserve">
+    <value>Use the navigation bar on the left to switch between different features.</value>
+  </data>
+  <data name="Home_Subheading.Text" xml:space="preserve">
+    <value>This is a work in progress. To report bugs and issues, please see the Github page.</value>
+  </data>
   <data name="Icons.Margin" xml:space="preserve">
     <value>0, 0, 10, 0</value>
   </data>

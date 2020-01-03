@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using DM_Suite.Menu_Features;
+using DM_Suite.Initiative_Features;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -25,8 +18,9 @@ namespace DM_Suite
         // List of ValueTuple holding the Navigation Tag and the relative Navigation Page 
         private readonly IList<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
-            ("home", typeof(MenuPage)),
-            ("second", typeof(Secondary))
+            ("home", typeof(HomeScreen)),
+            ("menu", typeof(MenuPage)),
+            ("initiative", typeof(InitiativePage))
         };
 
         public RootControl()
