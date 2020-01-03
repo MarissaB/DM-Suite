@@ -9,5 +9,10 @@
 
     <Grid>
 
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+            <ListView x:Name="Sessions" Width="300" Height="500"/>
+            <Button Content="Show Sessions" VerticalAlignment="Top" Click="Button_Click"/>
+        </StackPanel>
+
     </Grid>
 </Page>

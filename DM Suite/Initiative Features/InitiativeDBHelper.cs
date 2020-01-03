@@ -156,5 +156,109 @@ namespace DM_Suite.Initiative_Features
 
             return isSuccessful;
         }
+
+        public static List<Participant> GetSession(string session)
+        {
+            string commandText = "Select * from INITIATIVE where SESSION = @session";
+            SqliteCommand selectCommand = new SqliteCommand();
+            selectCommand.Parameters.AddWithValue("@session", session);
+            string logger = "Input values:\t\tSession == " + session;
+
+            selectCommand.CommandText = commandText;
+            List<Participant> results = new List<Participant>();
+                
+                using (SqliteConnection db = DatabaseFile)
+                {
+                    db.Open();
+                    selectCommand.Connection = db;
+                    SqliteDataReader query;
+                    try
+                    {
+                        LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Attempting query...\t\t" + selectCommand.CommandText, LogLevel.Info);
+                        LoggingServices.Instance.WriteLine<InitiativeDBHelper>(logger, LogLevel.Info);
+                        query = selectCommand.ExecuteReader();
+                    }
+                    catch (SqliteException error)
+                    {
+                        LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Error fetching database entries: " + error.Message, LogLevel.Error);
+                        return results;
+                    }
+                    while (query.Read())
+                    {
+                        Participant participant = new Participant(query);
+                        results.Add(participant);
+                    }
+                    db.Close();
+                }
+                
+            results = results.OrderBy(participant => participant.Initiative).ToList();
+            LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Found results: " + results.Count, LogLevel.Info);
+            return results;
+        }
+
+        public static List<string> GetSessionsList()
+        {
+            string commandText = "Select distinct SESSION from INITIATIVE";
+            SqliteCommand selectCommand = new SqliteCommand();
+            selectCommand.CommandText = commandText;
+            List<string> results = new List<string>();
+
+            using (SqliteConnection db = DatabaseFile)
+            {
+                db.Open();
+                selectCommand.Connection = db;
+                SqliteDataReader query;
+                try
+                {
+                    LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Attempting query...\t\t" + selectCommand.CommandText, LogLevel.Info);
+                    query = selectCommand.ExecuteReader();
+                }
+                catch (SqliteException error)
+                {
+                    LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Error fetching database entries: " + error.Message, LogLevel.Error);
+                    return results;
+                }
+                while (query.Read())
+                {
+                    string session = query.GetValue(0).ToString();
+                    results.Add(session);
+                }
+                db.Close();
+            }
+
+            LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Found results: " + results.Count, LogLevel.Info);
+            return results;
+        }
+
+        public static bool DeleteSession(string session)
+        {
+            bool isSuccessful = false;
+            string commandText = "Delete from INITIATIVE where Session = @session";
+            SqliteCommand deleteCommand = new SqliteCommand();
+            deleteCommand.Parameters.AddWithValue("@session", session);
+            deleteCommand.CommandText = commandText;
+
+            using (SqliteConnection db = DatabaseFile)
+            {
+                db.Open();
+                deleteCommand.Connection = db;
+
+                SqliteDataReader query;
+                try
+                {
+                    LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Attempting delete...\t\t" + deleteCommand.CommandText, LogLevel.Info);
+                    query = deleteCommand.ExecuteReader();
+                    isSuccessful = true;
+                    LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Successfully deleted session " + session, LogLevel.Info);
+                }
+                catch (SqliteException error)
+                {
+                    LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Failed delete...\t\t" + error.Message, LogLevel.Error);
+                }
+                db.Close();
+            }
+
+            return isSuccessful;
+        }
     }
 }
