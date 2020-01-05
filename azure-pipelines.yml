@@ -49,12 +49,21 @@ steps:
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
 
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(build.artifactstagingdirectory)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(build.artifactstagingdirectory)/$(Build.BuildId).zip'
+    replaceExistingArchive: true
+
 - task: GithubRelease@0 
   displayName: 'Create GitHub Release'      
   inputs:
     gitHubConnection: MarissaB
+    isPreRelease: true
     repositoryName: MarissaB/DM-Suite
     tagSource: manual
     tag: $(Build.BuildNumber)      
     assets: |
-         '$(build.artifactstagingdirectory)/AppxPackages'
+         '$(build.artifactstagingdirectory)/$(Build.BuildId).zip'
