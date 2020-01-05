@@ -44,18 +44,18 @@ steps:
     Contents: '**\bin\$(BuildConfiguration)\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(build.artifactstagingdirectory)'
-    includeRootFolder: true
+    rootFolderOrFile: '$(build.artifactstagingdirectory)/AppxPackages'
+    includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(build.artifactstagingdirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)/$(Build.BuildId).zip'
 
 - task: GithubRelease@0 
   displayName: 'Create GitHub Release'      
