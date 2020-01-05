@@ -49,13 +49,13 @@ steps:
     rootFolderOrFile: '$(build.artifactstagingdirectory)/AppxPackages'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(build.artifactstagingdirectory)/$(Build.BuildId).zip'
+    archiveFile: '$(build.artifactstagingdirectory)/$(Build.BuildNumber).zip'
     replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/$(Build.BuildId).zip'
+    PathtoPublish: '$(build.artifactstagingdirectory)/$(Build.BuildNumber).zip'
 
 - task: GithubRelease@0 
   displayName: 'Create GitHub Release'      
@@ -65,5 +65,4 @@ steps:
     repositoryName: MarissaB/DM-Suite
     tagSource: manual
     tag: $(Build.BuildNumber)      
-    assets: |
-         '$(build.artifactstagingdirectory)/$(Build.BuildId).zip'
+    assets: '$(build.artifactstagingdirectory)/$(Build.BuildNumber).zip'
