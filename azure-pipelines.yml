@@ -52,7 +52,7 @@ steps:
 - task: GithubRelease@0 
   displayName: 'Create GitHub Release'      
   inputs:
-    gitHubConnection: GithubToken
+    gitHubConnection: MarissaB
     repositoryName: MarissaB/DM-Suite
     tagSource: manual
     tag: $(Build.BuildNumber)      
