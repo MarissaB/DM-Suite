@@ -9,29 +9,28 @@
     d:DesignWidth="1000">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <NavigationView x:Name="NavView" Loaded="NavigationView_Loaded" ItemInvoked="NavigationView_ItemInvoked" OpenPaneLength="125" IsSettingsVisible="True" AlwaysShowHeader="False" IsBackButtonVisible="Collapsed">
+        <NavigationView x:Name="NavView" Loaded="NavigationView_Loaded" ItemInvoked="NavigationView_ItemInvoked" OpenPaneLength="155" IsSettingsVisible="True" AlwaysShowHeader="False" IsBackButtonVisible="Collapsed">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Home" x:Name="HomeNav" Tag="home">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE10F;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem Content="Second" x:Name="SecondNav" Tag="second">
+                <NavigationViewItem Content="Tavern Menus" x:Name="MenuNav" Tag="menu">
                     <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE708;"/>
+                        <FontIcon Glyph="&#xED56;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem Content="Initiative" x:Name="InitiativeNav" Tag="initiative">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE728;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="50px"/>
-                </Grid.RowDefinitions>
-                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                     <Frame x:Name="rootFrame" HorizontalAlignment="Stretch" Margin="10,10,10,10" />
                 </ScrollViewer>
-                <Rectangle Grid.Row="1" VerticalAlignment="Bottom" MinHeight="50" Height="50" Fill="{ThemeResource SystemControlHighlightAccentBrush}"/>
-                <TextBlock Grid.Row="1" Foreground="{ThemeResource ApplicationPageBackgroundThemeBrush}" Text="DM Suite v1.0.0.0 by Marissa Berresford" Margin="50, 0, 0, 15" VerticalAlignment="Bottom"/>
             </Grid>
         </NavigationView>
     </Grid>

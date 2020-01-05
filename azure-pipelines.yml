@@ -35,7 +35,7 @@ steps:
     platform: '$(buildPlatform)'
     solution: '$(solution)'
     configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxPackageSigningEnabled=true /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:PackageCertificateThumbprint="($securethumbprint)" /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=SideloadOnly /p:PackageCertificatePassword="$(sSecStrPassword)"'
+    msbuildArgs: '/p:AppxPackageSigningEnabled=true /p:PackageCertificateKeyFile="$(signingCert.secureFilePath)" /p:PackageCertificateThumbprint="$(securethumbprint)" /p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=SideloadOnly /p:PackageCertificatePassword="$(sSecStrPassword)"'
 
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
@@ -44,7 +44,25 @@ steps:
     Contents: '**\bin\$(BuildConfiguration)\**'
     TargetFolder: '$(build.artifactstagingdirectory)'
 
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(build.artifactstagingdirectory)/AppxPackages'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(build.artifactstagingdirectory)/$(Build.BuildNumber).zip'
+    replaceExistingArchive: true
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
+    PathtoPublish: '$(build.artifactstagingdirectory)/$(Build.BuildNumber).zip'
+
+- task: GithubRelease@0 
+  displayName: 'Create GitHub Release'      
+  inputs:
+    gitHubConnection: MarissaB
+    isPreRelease: true
+    repositoryName: MarissaB/DM-Suite
+    tagSource: manual
+    tag: $(Build.BuildNumber)      
+    assets: '$(build.artifactstagingdirectory)/$(Build.BuildNumber).zip'

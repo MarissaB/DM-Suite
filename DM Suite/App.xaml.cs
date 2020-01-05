@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Navigation;
 using Microsoft.Data.Sqlite;
 using DM_Suite.Services.LoggingServices;
 using DM_Suite.Menu_Features;
+using DM_Suite.Initiative_Features;
 using MetroLog;
 using Windows.Storage;
 using Windows.ApplicationModel.Resources;
@@ -32,24 +33,11 @@ namespace DM_Suite
                 LoggingServices.Instance.WriteLine<App>("Sqlite Database Tables for MENU and MENU_ITEMS were created.", LogLevel.Info);
             }
 
-            //string type1 = resourceLoader.GetString("Menu_Drink/Content").ToUpper();
-            //string type2 = resourceLoader.GetString("Menu_Food/Content").ToUpper();
-            //string type3 = resourceLoader.GetString("Menu_Treat/Content").ToUpper();
-
-            //using (SqliteConnection db = new SqliteConnection("Filename=" + databaseName + ".db"))
-            //{
-            //    db.Open();
-            //    string tableCommand = "CREATE TABLE IF NOT EXISTS `MENU_ITEMS` ( `ID` INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, `NAME` TEXT NOT NULL, `DESCRIPTION` TEXT, `COST` NUMERIC NOT NULL, `TYPE` TEXT NOT NULL DEFAULT '" + type2 + "' CHECK(TYPE IN ('" + type2 + "', '" + type1 + "', '" + type3 + "')) )";
-            //    SqliteCommand createTable = new SqliteCommand(tableCommand, db);
-            //    try
-            //    {
-            //        createTable.ExecuteReader();
-            //    }
-            //    catch (SqliteException e)
-            //    {
-            //        LoggingServices.Instance.WriteLine<App>("Sqlite Database Table could not be created. " + e, LogLevel.Error);
-            //    }
-            //}
+            bool initiativeTableCreated = InitiativeDBHelper.CreateDatabaseTable(databaseName);
+            if (initiativeTableCreated)
+            {
+                LoggingServices.Instance.WriteLine<App>("Sqlite Database Tables for INITIATIVE was created.", LogLevel.Info);
+            }
         }
 
         ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse();
@@ -80,7 +68,7 @@ namespace DM_Suite
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                rootControl.RootFrame.Navigate(typeof(MenuPage), e.Arguments);
+                rootControl.RootFrame.Navigate(typeof(HomeScreen), e.Arguments);
             }
             // Ensure the current window is active
             Window.Current.Activate();
