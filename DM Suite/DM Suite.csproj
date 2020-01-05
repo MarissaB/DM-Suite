@@ -25,7 +25,8 @@
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
-    <PackageCertificateThumbprint>E87BCFDC8844CD551988DF52766D38867CD59298</PackageCertificateThumbprint>
+    <!--<PackageCertificateThumbprint>E87BCFDC8844CD551988DF52766D38867CD59298</PackageCertificateThumbprint> --> <!-- Work laptop -->
+    <PackageCertificateThumbprint>D950277782054E65725D1FC805B5780357F7FCA4</PackageCertificateThumbprint> <!-- Azure -->
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
@@ -228,9 +229,6 @@
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.3.191211002</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DM Suite_TemporaryKey.pfx" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
