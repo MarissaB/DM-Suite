@@ -52,9 +52,9 @@ steps:
 - task: GithubRelease@0 
   displayName: 'Create GitHub Release'      
   inputs:
-    gitHubConnection: marissab
-    repositoryName: marissab/DM-Suite
+    gitHubConnection: MarissaB
+    repositoryName: MarissaB/DM-Suite
     tagSource: manual
     tag: $(Build.BuildNumber)      
     assets: |
-         $(build.artifactstagingdirectory)/AppxPackages
+         '$(build.artifactstagingdirectory)/AppxPackages'
