@@ -17,7 +17,7 @@ namespace DM_Suite.Menu_Features
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            NameInput = Name.Text;
+            NameInput = NameBox.Text;
             DescriptionInput = Description.Text;
             CostInput = Cost.Text;
             foreach (RadioButton radioButton in TypeSelections.Children)

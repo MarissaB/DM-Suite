@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" Grid.Column="0" >
             <TextBlock x:Name="NameLabel" Text="Name:" Padding="0, 0, 0, 5"/>
-            <TextBox x:Name="Name" />
+            <TextBox x:Name="NameBox" />
             <TextBlock x:Name="DescriptionLabel" Text="Description:" Padding="0, 10, 0, 5"/>
             <TextBox x:Name="Description"/>
             <TextBlock x:Name="CostLabel" Text="Cost:" Padding="0, 10, 0, 5"/>

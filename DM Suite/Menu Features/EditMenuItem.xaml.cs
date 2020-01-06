@@ -17,7 +17,7 @@ namespace DM_Suite.Menu_Features
 
         private void ContentDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            Name.Text = NameInput;
+            NameBox.Text = NameInput;
             Description.Text = DescriptionInput;
             Cost.Text = CostInput;
             foreach (RadioButton radioButton in TypeSelections.Children)
