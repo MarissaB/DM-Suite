@@ -196,7 +196,7 @@ namespace DM_Suite.Initiative_Features
                     db.Close();
                 }
                 
-            results = results.OrderBy(participant => participant.Initiative).ToList();
+            results = results.OrderByDescending(participant => participant.Initiative).ToList();
             LoggingServices.Instance.WriteLine<InitiativeDBHelper>("Found results: " + results.Count, LogLevel.Info);
             return results;
         }
