@@ -27,7 +27,7 @@
             <StackPanel Orientation="Vertical" Background="{ThemeResource SystemControlChromeMediumLowAcrylicElementMediumBrush}" BorderThickness="2" BorderBrush="{ThemeResource SystemControlBackgroundBaseLowRevealBorderBrush}">
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                     <TextBlock x:Uid="Menu_Name" Margin="10,0,10,0" VerticalAlignment="Center"/>
-                    <TextBox x:Name="InputMenuNameSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False" Height="25" />
+                    <TextBox x:Name="InputMenuNameSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False" />
                     <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="ExecuteSearch" x:Name="MenuSearch">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE721;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" />
@@ -42,7 +42,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                     <TextBlock x:Uid="Menu_Location" Margin="10,0,10,0" VerticalAlignment="Center"/>
-                    <TextBox x:Name="InputMenuLocationSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False" Height="25"/>
+                    <TextBox x:Name="InputMenuLocationSearch_Box" Width="400" MinWidth="250" HorizontalAlignment="Left" AcceptsReturn="False" Margin="0, 5, 0, 5" />
                     <Button x:Name="MenuDelete" Click="DeleteSelectedMenu" VerticalAlignment="Center" Margin="15, 5, 15, 5" Width="150" HorizontalAlignment="Center" IsEnabled="False">
                         <StackPanel Orientation="Horizontal">
                             <FontIcon x:Name="MenuDeleteIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE74D;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons" Opacity="0.6"/>
@@ -53,10 +53,11 @@
             </StackPanel>
         </StackPanel>
         <!--#endregion-->
-        <Custom:DataGrid Grid.Row="2" Grid.Column="0" Padding="5,5,5,5" Name="MenuSearchResults" SelectionMode="Single" SelectionChanged="MenuSearchResults_SelectionChanged" VerticalScrollBarVisibility="Auto" IsReadOnly="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" AutoGenerateColumns="True" HorizontalAlignment="Stretch"/>
+        <Custom:DataGrid Grid.Row="2" Grid.Column="0" Padding="5,5,5,5" Margin="0,0,10,0" Name="MenuSearchResults" SelectionMode="Single" SelectionChanged="MenuSearchResults_SelectionChanged" VerticalScrollBarVisibility="Auto" IsReadOnly="True" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" AutoGenerateColumns="True" HorizontalAlignment="Stretch"/>
         <!--#region Current Menu Button Bar -->
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="1" Padding="5,5,5,5">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center" Height="50">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Height="50">
+                <TextBlock x:Uid="Menu_Heading_CurrentMenu" FontSize="20" VerticalAlignment="Center" />
                 <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="CreateNewMenu" Width="150">
                     <StackPanel Orientation="Horizontal">
                         <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE78B;" Foreground="{ThemeResource ButtonForegroundThemeBrush}" x:Uid="Icons"/>
@@ -93,8 +94,8 @@
         </StackPanel>
         <!--#endregion-->
         <!--#region Current Menu -->
-        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1" Padding="5,5,5,5" MinHeight="400">
-            <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" MinHeight="350" IsReadOnly="True" AutoGenerateColumns="True" SelectionMode="Extended" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Grid.Column="1"  MinHeight="400">
+            <Custom:DataGrid Name="CurrentMenu" VerticalScrollBarVisibility="Auto" Padding="5,5,5,5" MinHeight="350" IsReadOnly="True" AutoGenerateColumns="True" SelectionMode="Extended" AutoGeneratingColumn="SearchResults_AutoGeneratingColumn" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center" Height="50">
                 <Button VerticalAlignment="Center" Margin="15, 0, 15, 0" Click="AddToCurrentMenu">
                     <StackPanel Orientation="Horizontal">
@@ -142,9 +143,9 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
                         <TextBlock x:Uid="Menu_MinGold" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                        <TextBox x:Name="CostMin" Width="20" x:Uid="Generic_Min" Margin="5,0,10,0" extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Normal" />
+                        <TextBox x:Name="CostMin" Width="70" x:Uid="Generic_Min" Margin="5,0,10,0" extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Normal" />
                         <TextBlock x:Uid="Menu_MaxGold" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                        <TextBox x:Name="CostMax" Width="20" x:Uid="Generic_Max" Margin="5,0,10,0" extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Normal"/>
+                        <TextBox x:Name="CostMax" Width="70" x:Uid="Generic_Max" Margin="5,0,10,0" extensions:TextBoxRegex.ValidationType="Decimal" extensions:TextBoxRegex.ValidationMode="Normal"/>
                         <TextBlock x:Name="MenuItemResultsCount" Visibility="Collapsed" Margin="55,0,0,0" VerticalAlignment="Center" Foreground="{ThemeResource CheckBoxContentDisabledForegroundThemeBrush}"/>
                     </StackPanel>
                 </StackPanel>

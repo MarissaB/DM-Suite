@@ -207,6 +207,9 @@
   <data name="Menu_Food.Content" xml:space="preserve">
     <value>Food</value>
   </data>
+  <data name="Menu_Heading_CurrentMenu.Text" xml:space="preserve">
+    <value>Edit Current Menu</value>
+  </data>
   <data name="Menu_Heading_SearchItems.Text" xml:space="preserve">
     <value>Search Menu Items</value>
   </data>
@@ -227,7 +230,7 @@ You can also filter by Cost and Type.</value>
     <value>Gold (Min)</value>
   </data>
   <data name="Menu_Name.Text" xml:space="preserve">
-    <value>Menu Name:</value>
+    <value>Name:</value>
   </data>
   <data name="Menu_NewLocation" xml:space="preserve">
     <value>Unknown Location</value>

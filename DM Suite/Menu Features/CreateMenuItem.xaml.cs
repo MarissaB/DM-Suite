@@ -32,7 +32,7 @@ namespace DM_Suite.Menu_Features
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-
+            TypeInput = "none";
         }
 
         

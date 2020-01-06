@@ -406,34 +406,37 @@ namespace DM_Suite.Menu_Features
             string itemCost = createDialog.CostInput;
             string itemType = createDialog.TypeInput.ToUpper();
 
-            if (MenuItem.IsMenuItemValid(itemName, itemCost, itemType))
+            if (itemType != "NONE") // Cancel button was hit
             {
-                MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, itemType);
-                bool successfulSave = false;
-
-                if(string.IsNullOrEmpty(MenuDBHelper.SearchMenuItem(newItem).Name)) // check if item already exists in database
-                { 
-                    successfulSave = MenuDBHelper.AddMenuItem(newItem);
-                }
-                
-                if (successfulSave)
+                if (MenuItem.IsMenuItemValid(itemName, itemCost, itemType))
                 {
-                    string messageText = resourceLoader.GetString("Message_DatabaseSaveSuccessful");
-                    MessageDialog successMessage = new MessageDialog(messageText);
-                    await successMessage.ShowAsync();
+                    MenuItem newItem = new MenuItem(itemName, itemDescription, itemCost, itemType);
+                    bool successfulSave = false;
+
+                    if (string.IsNullOrEmpty(MenuDBHelper.SearchMenuItem(newItem).Name)) // check if item already exists in database
+                    {
+                        successfulSave = MenuDBHelper.AddMenuItem(newItem);
+                    }
+
+                    if (successfulSave)
+                    {
+                        string messageText = resourceLoader.GetString("Message_DatabaseSaveSuccessful");
+                        MessageDialog successMessage = new MessageDialog(messageText);
+                        await successMessage.ShowAsync();
+                    }
+                    else
+                    {
+                        string messageText = resourceLoader.GetString("Message_DatabaseSaveFailed");
+                        MessageDialog failureMessage = new MessageDialog(messageText);
+                        await failureMessage.ShowAsync();
+                    }
                 }
                 else
                 {
-                    string messageText = resourceLoader.GetString("Message_DatabaseSaveFailed");
+                    string messageText = resourceLoader.GetString("Errors_MenuItemInvalid");
                     MessageDialog failureMessage = new MessageDialog(messageText);
                     await failureMessage.ShowAsync();
                 }
-            }
-            else
-            {
-                string messageText = resourceLoader.GetString("Errors_MenuItemInvalid");
-                MessageDialog failureMessage = new MessageDialog(messageText);
-                await failureMessage.ShowAsync();
             }
 
         }
