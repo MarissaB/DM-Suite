@@ -16,9 +16,9 @@
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical" Grid.Column="0" >
-            <TextBlock x:Name="NameLabel" Text="Name:" Padding="0, 0, 0, 5"/>
+            <TextBlock x:Name="NameLabel" x:Uid="Initiative_AddParticipant_Name" Padding="0, 0, 0, 5"/>
             <TextBox x:Name="NameBox" />
-            <TextBlock x:Name="InitiativeLabel" Text="Initiative:" Padding="0, 10, 0, 5"/>
+            <TextBlock x:Name="InitiativeLabel" x:Uid="Initiative_AddParticipant_Initiative" Padding="0, 10, 0, 5"/>
             <TextBox x:Name="Initiative" TextChanged="Initiative_TextChanged"/>
             
             <TextBlock x:Name="SessionLabel" x:Uid="Initiative_AddParticipant_Session"/>

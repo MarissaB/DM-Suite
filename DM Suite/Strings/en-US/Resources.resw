@@ -165,6 +165,18 @@
   <data name="Icons.Margin" xml:space="preserve">
     <value>0, 0, 10, 0</value>
   </data>
+  <data name="Initiative_AddParticipant.Content" xml:space="preserve">
+    <value>New Participant</value>
+  </data>
+  <data name="Initiative_AddParticipant_Initiative.Text" xml:space="preserve">
+    <value>Initiative:</value>
+  </data>
+  <data name="Initiative_AddParticipant_Name.Text" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="Initiative_AddParticipant_NewSession.Content" xml:space="preserve">
+    <value>Add to new session?</value>
+  </data>
   <data name="Initiative_AddParticipant_Session.Text" xml:space="preserve">
     <value>Session:</value>
   </data>
