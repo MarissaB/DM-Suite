@@ -21,8 +21,9 @@
         <TextBlock x:Uid="Heading_Initiative" Grid.Row="0" Grid.Column="0" FontSize="24" Margin="0,0,0,10"/>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Grid.Row="1" Grid.Column="0">
             <TextBlock x:Name="Initiative_SelectSession"/>
-            <ComboBox x:Name="Sessions" Width="300" Margin="10,0,10,0"/>
+            <ComboBox x:Name="Sessions" Width="300" Margin="10,0,10,0" SelectionChanged="Sessions_SelectionChanged"/>
             <Button Content="Refresh List" VerticalAlignment="Top" Click="RefreshSessionList_Click"/>
+            <Button Content="Add Participant" VerticalAlignment="Top" Click="ShowAddParticipantItemDialog"/>
         </StackPanel>
         <!-- Initiative display -->
         <StackPanel Margin="10, 10, 10, 10" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2">

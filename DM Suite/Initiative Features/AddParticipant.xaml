@@ -1,0 +1,30 @@
+﻿<ContentDialog
+    x:Class="DM_Suite.Initiative_Features.AddParticipant"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Add Participant"
+    PrimaryButtonText="Add"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid MinWidth="400">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical" Grid.Column="0" >
+            <TextBlock x:Name="NameLabel" Text="Name:" Padding="0, 0, 0, 5"/>
+            <TextBox x:Name="NameBox" />
+            <TextBlock x:Name="InitiativeLabel" Text="Initiative:" Padding="0, 10, 0, 5"/>
+            <TextBox x:Name="Initiative" TextChanged="Initiative_TextChanged"/>
+            
+            <TextBlock x:Name="SessionLabel" x:Uid="Initiative_AddParticipant_Session"/>
+            <TextBox x:Name="SessionBox" IsEnabled="False"/>
+            <CheckBox x:Name="AddToNewSession" Content="Add to new session?" Click="AddToNewSession_Click" Margin="0,5,0,5" Padding="10,7,0,0" IsChecked="False"/>
+
+        </StackPanel>
+    </Grid>
+</ContentDialog>

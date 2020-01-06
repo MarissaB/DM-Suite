@@ -10,6 +10,8 @@ using Windows.Storage.Pickers;
 using DM_Suite.Services.LoggingServices;
 using MetroLog;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Uwp.UI.Extensions;
 
 namespace DM_Suite.Menu_Features
 {
@@ -132,6 +134,7 @@ namespace DM_Suite.Menu_Features
             MenuSearchResults.ItemsSource = searchResults;
             MenuResultsCount.Text = resourceLoader.GetString("Heading_Results") + searchResults.Count;
             MenuResultsCount.Visibility = Visibility.Visible;
+            
         }
 
         #region Checkbox toggle Stuff

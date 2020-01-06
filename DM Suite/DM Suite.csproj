@@ -25,8 +25,10 @@
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AppInstallerUpdateFrequency>0</AppInstallerUpdateFrequency>
     <AppInstallerCheckForUpdateFrequency>OnApplicationRun</AppInstallerCheckForUpdateFrequency>
-    <!--<PackageCertificateThumbprint>E87BCFDC8844CD551988DF52766D38867CD59298</PackageCertificateThumbprint> --> <!-- Work laptop -->
-    <PackageCertificateThumbprint>D950277782054E65725D1FC805B5780357F7FCA4</PackageCertificateThumbprint> <!-- Azure -->
+    <!--<PackageCertificateThumbprint>E87BCFDC8844CD551988DF52766D38867CD59298</PackageCertificateThumbprint> -->
+    <!-- Work laptop -->
+    <PackageCertificateThumbprint>D950277782054E65725D1FC805B5780357F7FCA4</PackageCertificateThumbprint>
+    <!-- Azure -->
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
@@ -114,6 +116,9 @@
     <Compile Include="HomeScreen.xaml.cs">
       <DependentUpon>HomeScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Initiative Features\AddParticipant.xaml.cs">
+      <DependentUpon>AddParticipant.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Initiative Features\InitiativeDBHelper.cs" />
     <Compile Include="Initiative Features\InitiativePage.xaml.cs">
       <DependentUpon>InitiativePage.xaml</DependentUpon>
@@ -173,6 +178,10 @@
     <Page Include="HomeScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Initiative Features\AddParticipant.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Initiative Features\InitiativePage.xaml">
       <SubType>Designer</SubType>

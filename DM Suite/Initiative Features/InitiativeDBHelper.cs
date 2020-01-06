@@ -157,6 +157,11 @@ namespace DM_Suite.Initiative_Features
             return isSuccessful;
         }
 
+        /// <summary>
+        /// Queries a list of participants in a given session
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns><returns>
         public static List<Participant> GetSession(string session)
         {
             string commandText = "Select * from INITIATIVE where SESSION = @session";
@@ -196,6 +201,11 @@ namespace DM_Suite.Initiative_Features
             return results;
         }
 
+
+        /// <summary>
+        /// Queries a list of unique sessions across the entire table
+        /// </summary>
+        /// <returns></returns>
         public static List<string> GetSessionsList()
         {
             string commandText = "Select distinct SESSION from INITIATIVE";

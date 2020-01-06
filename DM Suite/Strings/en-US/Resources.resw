@@ -165,6 +165,12 @@
   <data name="Icons.Margin" xml:space="preserve">
     <value>0, 0, 10, 0</value>
   </data>
+  <data name="Initiative_AddParticipant_Session.Text" xml:space="preserve">
+    <value>Session:</value>
+  </data>
+  <data name="Initiative_Default" xml:space="preserve">
+    <value>Default Session</value>
+  </data>
   <data name="Initiative_SelectSession.Text" xml:space="preserve">
     <value>Select Session:</value>
   </data>
