@@ -9,7 +9,7 @@
     PrimaryButtonText="Add"
     SecondaryButtonText="Cancel"
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick" Loaded="ContentDialog_Loaded">
 
     <Grid MinWidth="400">
         <Grid.ColumnDefinitions>
@@ -18,13 +18,12 @@
         <StackPanel Orientation="Vertical" Grid.Column="0" >
             <TextBlock x:Name="NameLabel" x:Uid="Initiative_AddParticipant_Name" Padding="0, 0, 0, 5"/>
             <TextBox x:Name="NameBox" />
-            <TextBlock x:Name="InitiativeLabel" x:Uid="Initiative_AddParticipant_Initiative" Padding="0, 10, 0, 5"/>
+            <TextBlock x:Name="InitiativeLabel" x:Uid="Initiative_AddParticipant_Initiative" Padding="0, 5, 0, 5"/>
             <TextBox x:Name="Initiative" TextChanged="Initiative_TextChanged"/>
-            
-            <TextBlock x:Name="SessionLabel" x:Uid="Initiative_AddParticipant_Session"/>
+            <TextBlock x:Name="SessionLabel" x:Uid="Initiative_AddParticipant_Session" Padding="0, 5, 0, 5"/>
             <TextBox x:Name="SessionBox" IsEnabled="False"/>
-            <CheckBox x:Name="AddToNewSession" Content="Add to new session?" Click="AddToNewSession_Click" Margin="0,5,0,5" Padding="10,7,0,0" IsChecked="False"/>
-
+            <ComboBox x:Name="SessionSelection" Visibility="Collapsed" Padding="10,5,10,5" HorizontalAlignment="Stretch"/>
+            <CheckBox x:Name="AddToNewSession" x:Uid="Initiative_AddParticipant_NewSession" Click="AddToNewSession_Click" Margin="0,5,0,5" Padding="10,6,0,0"/>
         </StackPanel>
     </Grid>
 </ContentDialog>

@@ -21,11 +21,6 @@ namespace DM_Suite.Initiative_Features
             Sessions.ItemsSource = InitiativeDBHelper.GetSessionsList();
         }
 
-        private void RefreshSessionList_Click(object sender, RoutedEventArgs e)
-        {
-            Sessions.ItemsSource = InitiativeDBHelper.GetSessionsList();
-        }
-
         private async void ShowAddParticipantItemDialog(object sender, RoutedEventArgs e)
         {
             AddParticipant addDialog = new AddParticipant();

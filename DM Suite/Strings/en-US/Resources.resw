@@ -166,7 +166,7 @@
     <value>0, 0, 10, 0</value>
   </data>
   <data name="Initiative_AddParticipant.Content" xml:space="preserve">
-    <value>New Participant</value>
+    <value>Add Participant</value>
   </data>
   <data name="Initiative_AddParticipant_Initiative.Text" xml:space="preserve">
     <value>Initiative:</value>
