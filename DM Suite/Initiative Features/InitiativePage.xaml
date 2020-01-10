@@ -10,13 +10,16 @@
 
     <Grid Margin="10,0,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" /> <!-- Heading -->
-            <RowDefinition Height="Auto"/> <!-- Toolbars -->
-            <RowDefinition Height="Auto" /> <!-- Initiative display -->
+            <!-- Heading -->
+            <RowDefinition Height="Auto" />
+            <!-- Toolbars -->
+            <RowDefinition Height="Auto"/>
+            <!-- Initiative display -->
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-           <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
             <!--<ColumnDefinition Width="6*"/>-->
         </Grid.ColumnDefinitions>
         <TextBlock x:Uid="Heading_Initiative" Grid.Row="0" Grid.Column="0" FontSize="24" Margin="0,0,0,10"/>
@@ -28,18 +31,18 @@
         <!-- Initiative display -->
         <StackPanel Margin="10, 10, 10, 10" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2">
             <!-- Timeline -->
-                <FlipView x:Name="InitiativeFlipper" IsEnabled="False" MaxWidth="445" Height="180" BorderBrush="Black" BorderThickness="1" ItemsSource="{x:Bind CurrentSession, Mode=TwoWay}">
-                    <FlipView.ItemTemplate>
-                        <DataTemplate x:DataType="data:Participant">
-                            <Grid>
-                                <Image Height="120" Source="C:\Users\Marissa\Source\Repos\DM-Suite\DM Suite\Assets\StoreLogo.png" Stretch="Uniform" VerticalAlignment="Top"/>
-                                <Border Background="#A5FFFFFF" Height="60" VerticalAlignment="Bottom">
+            <FlipView x:Name="InitiativeFlipper" IsEnabled="False" MaxWidth="445" Height="180" BorderBrush="Black" BorderThickness="1" ItemsSource="{x:Bind CurrentSession, Mode=TwoWay}">
+                <FlipView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Participant">
+                        <Grid>
+                            <Image Height="120" Source="C:\Users\Marissa\Source\Repos\DM-Suite\DM Suite\Assets\StoreLogo.png" Stretch="Uniform" VerticalAlignment="Top"/>
+                            <Border Background="#A5FFFFFF" Height="60" VerticalAlignment="Bottom">
                                 <TextBlock Text="{x:Bind Name}" Padding="12,12" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center"/>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-    </FlipView.ItemTemplate>
-    </FlipView>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </FlipView.ItemTemplate>
+            </FlipView>
             <StackPanel Orientation="Horizontal" BorderBrush="{StaticResource AppBarBorderThemeBrush}" BorderThickness="1" Width="445" HorizontalAlignment="Center">
                 <Button x:Name="PreviousParticipant" Content="Prev" Click="PreviousParticipant_Click" />
                 <TextBlock x:Name="Previous" Margin="5,0,10,0" Width="100" VerticalAlignment="Center" HorizontalTextAlignment="Center"/>
@@ -48,5 +51,17 @@
                 <Button x:Name="NextParticipant" Content="Next" Click="NextParticipant_Click" />
             </StackPanel>
         </StackPanel>
+        <my:Expander ExpandDirection="Down" HorizontalAlignment="Right" Margin="10,10,0,0" Grid.Row="3" Header="Expander Demo" VerticalAlignment="Top">
+            <ListView x:Name="ExpandedListView" ItemsSource="{x:Bind CurrentSession}" SelectionMode="None" VerticalAlignment="Top" Height="500">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Participant">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox x:Name="ToggleActive" Click="ToggleActive_Click" IsChecked="{x:Bind Active}"/>
+                            <TextBlock Text="{x:Bind Name}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </my:Expander>
     </Grid>
 </Page>

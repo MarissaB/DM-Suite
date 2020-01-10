@@ -1,4 +1,5 @@
 ﻿using Windows.UI.Xaml;
+using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
 using System;
 using Windows.ApplicationModel.Resources;
@@ -68,6 +69,7 @@ namespace DM_Suite.Initiative_Features
                     CurrentSessionName = Sessions.SelectedValue.ToString();
                     CurrentSession = InitiativeDBHelper.GetSession(CurrentSessionName);
                     InitiativeFlipper.ItemsSource = CurrentSession;
+                    ExpandedListView.ItemsSource = CurrentSession;
                     UpdateTimeline(0);
                 }
             }
@@ -80,9 +82,36 @@ namespace DM_Suite.Initiative_Features
             Participant previous = CurrentSession[GetPrevious(index)];
             Participant next = CurrentSession[GetNext(index)];
             CurrentParticipant = CurrentSession[index];
+            
             Previous.Text = previous.Name + " (" + previous.Initiative + ")";
+            if (!previous.Active)
+            {
+                Previous.TextDecorations = TextDecorations.Strikethrough;
+            }
+            else
+            {
+                Previous.TextDecorations = TextDecorations.None;
+            }
+            
             Current.Text = CurrentParticipant.Name + " (" + CurrentParticipant.Initiative + ")";
+            if (!CurrentParticipant.Active)
+            {
+                Current.TextDecorations = TextDecorations.Strikethrough;
+            }
+            else
+            {
+                Current.TextDecorations = TextDecorations.None;
+            }
+
             Next.Text = next.Name + " (" + next.Initiative + ")";
+            if (!next.Active)
+            {
+                Next.TextDecorations = TextDecorations.Strikethrough;
+            }
+            else
+            {
+                Next.TextDecorations = TextDecorations.None;
+            }
             InitiativeFlipper.SelectedItem = CurrentParticipant;
         }
 
@@ -90,6 +119,7 @@ namespace DM_Suite.Initiative_Features
         {
             CurrentSession = InitiativeDBHelper.GetSession(CurrentSessionName);
             InitiativeFlipper.ItemsSource = CurrentSession;
+            ExpandedListView.ItemsSource = CurrentSession;
             int index = GetCurrentParticipantIndex();
             if (index >= 0)
             {
@@ -161,6 +191,20 @@ namespace DM_Suite.Initiative_Features
         {
             int current = CurrentSession.IndexOf(CurrentParticipant);
             UpdateTimeline(GetNext(current));
+        }
+
+        /// <summary>
+        /// Flips the "Active" boolean on a participant, writes it to db, then refreshes the UI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToggleActive_Click(object sender, RoutedEventArgs e)
+        {
+            var box = (CheckBox)sender;
+            Participant clicked = (Participant)box.DataContext;
+            clicked.Active = !clicked.Active;
+            InitiativeDBHelper.UpdateParticipant(clicked);
+            RefreshSessionView();
         }
     }
 }

@@ -94,7 +94,7 @@ namespace DM_Suite.Initiative_Features
         public static bool UpdateParticipant(Participant participant)
         {
             bool isSuccessful = false;
-            string commandText = "Update INITIATIVE SET Initiative = @initiative, Active = @active, WHERE Name = @name AND Session = @session";
+            string commandText = "Update INITIATIVE SET Initiative = @initiative, Active = @active WHERE Name = @name AND Session = @session";
             SqliteCommand updateCommand = new SqliteCommand();
             updateCommand.Parameters.AddWithValue("@name", participant.Name);
             updateCommand.Parameters.AddWithValue("@initiative", participant.Initiative);
