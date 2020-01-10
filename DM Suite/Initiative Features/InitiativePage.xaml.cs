@@ -13,51 +13,61 @@ namespace DM_Suite.Initiative_Features
     /// </summary>
     public sealed partial class InitiativePage : Page
     {
+        private List<string> SessionList = new List<string>();
         private string CurrentSessionName = ResourceLoader.GetForCurrentView().GetString("Initiative_Default");
         private List<Participant> CurrentSession = new List<Participant>();
         private Participant CurrentParticipant = new Participant();
+        
         public InitiativePage()
         {
             this.InitializeComponent();
-            Sessions.ItemsSource = InitiativeDBHelper.GetSessionsList();
+            SessionList = InitiativeDBHelper.GetSessionsList();
+            PreviousParticipant.IsEnabled = false;
+            NextParticipant.IsEnabled = false;
         }
 
         private async void ShowAddParticipantItemDialog(object sender, RoutedEventArgs e)
         {
-            AddParticipant addDialog = new AddParticipant();
-            addDialog.CurrentSession = CurrentSessionName;
+            AddParticipant addDialog = new AddParticipant
+            {
+                CurrentSession = CurrentSessionName
+            };
             await addDialog.ShowAsync();
 
             string participantName = addDialog.NameInput;
             int participantInitiative = addDialog.InitiativeInput;
             string participantSession = addDialog.SessionInput;
             bool add = addDialog.Confirm;
-            
+
             if (add)
             {
-                Participant participant = new Participant();
-                participant.Name = participantName;
-                participant.Initiative = participantInitiative;
-                participant.Session = participantSession;
-                participant.Active = true;
+                Participant participant = new Participant
+                {
+                    Name = participantName,
+                    Initiative = participantInitiative,
+                    Session = participantSession,
+                    Active = true
+                };
                 InitiativeDBHelper.AddParticipant(participant);
-                CurrentSession.Add(participant);
-                Sessions.ItemsSource = InitiativeDBHelper.GetSessionsList();
+                SessionList = InitiativeDBHelper.GetSessionsList(); // Selected item will be set to 'null'
+                Sessions.ItemsSource = SessionList;
+                Sessions.SelectedIndex = GetCurrentSessionIndex(); // Set the selected session to match the current one
+                RefreshSessionView();
             }
 
         }
 
         private void Sessions_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            if (Sessions.SelectedValue != null)
+            if (Sessions.SelectedValue != null) // Selecting a new session
             {
-                CurrentSession.Clear();
-                CurrentSessionName = Sessions.SelectedValue.ToString();
-                CurrentSession = InitiativeDBHelper.GetSession(CurrentSessionName);
-                Flippy.ItemsSource = CurrentSession;
-                if (CurrentSession.Count > 2)
+                if (Sessions.SelectedValue.ToString() != CurrentSessionName)
                 {
+                    // Picking a different session from what was already there, so start fresh
+                    CurrentSession.Clear();
+                    CurrentSessionName = Sessions.SelectedValue.ToString();
+                    CurrentSession = InitiativeDBHelper.GetSession(CurrentSessionName);
+                    InitiativeFlipper.ItemsSource = CurrentSession;
                     UpdateTimeline(0);
                 }
             }
@@ -65,13 +75,56 @@ namespace DM_Suite.Initiative_Features
 
         private void UpdateTimeline(int index)
         {
+            PreviousParticipant.IsEnabled = true;
+            NextParticipant.IsEnabled = true;
             Participant previous = CurrentSession[GetPrevious(index)];
             Participant next = CurrentSession[GetNext(index)];
             CurrentParticipant = CurrentSession[index];
             Previous.Text = previous.Name + " (" + previous.Initiative + ")";
             Current.Text = CurrentParticipant.Name + " (" + CurrentParticipant.Initiative + ")";
             Next.Text = next.Name + " (" + next.Initiative + ")";
-            Flippy.SelectedItem = CurrentParticipant;
+            InitiativeFlipper.SelectedItem = CurrentParticipant;
+        }
+
+        private void RefreshSessionView()
+        {
+            CurrentSession = InitiativeDBHelper.GetSession(CurrentSessionName);
+            InitiativeFlipper.ItemsSource = CurrentSession;
+            int index = GetCurrentParticipantIndex();
+            if (index >= 0)
+            {
+                UpdateTimeline(index);
+                InitiativeFlipper.SelectedIndex = index;
+            }
+        }
+
+        private int GetCurrentParticipantIndex()
+        {
+            int index = -1;
+            foreach (Participant participant in CurrentSession)
+            {
+                if (participant.Name == CurrentParticipant.Name && participant.Initiative == participant.Initiative)
+                {
+                    index = CurrentSession.IndexOf(participant);
+                    CurrentParticipant = participant;
+                }
+            }
+
+            return index;
+        }
+
+        private int GetCurrentSessionIndex()
+        {
+            int index = -1;
+            foreach (string sessionName in SessionList)
+            {
+                if (sessionName == CurrentSessionName)
+                {
+                    index = SessionList.IndexOf(sessionName);
+                }
+            }
+            return index;
+            
         }
 
         private int GetPrevious(int current)
@@ -96,12 +149,6 @@ namespace DM_Suite.Initiative_Features
             {
                 return current + 1;
             }
-        }
-
-        private void Flippy_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //int current = CurrentSession.IndexOf(CurrentParticipant);
-            //UpdateTimeline(GetNext(current));
         }
 
         private void PreviousParticipant_Click(object sender, RoutedEventArgs e)
