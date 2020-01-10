@@ -46,7 +46,7 @@
             <StackPanel Orientation="Horizontal" BorderBrush="{StaticResource AppBarBorderThemeBrush}" BorderThickness="1" Width="445" HorizontalAlignment="Center">
                 <Button x:Name="PreviousParticipant" Content="Prev" Click="PreviousParticipant_Click" />
                 <TextBlock x:Name="Previous" Margin="5,0,10,0" Width="100" VerticalAlignment="Center" HorizontalTextAlignment="Center"/>
-                <TextBlock x:Name="Current" Margin="5,0,10,0" Width="100" VerticalAlignment="Center" HorizontalTextAlignment="Center"/>
+                <TextBlock x:Name="Current" Margin="5,0,10,0" Width="100" VerticalAlignment="Center" HorizontalTextAlignment="Center" FontWeight="Bold"/>
                 <TextBlock x:Name="Next" Margin="5,0,10,0" Width="100" VerticalAlignment="Center" HorizontalTextAlignment="Center"/>
                 <Button x:Name="NextParticipant" Content="Next" Click="NextParticipant_Click" />
             </StackPanel>
