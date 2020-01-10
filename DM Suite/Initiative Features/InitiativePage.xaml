@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" /> <!-- Heading -->
             <RowDefinition Height="Auto"/> <!-- Toolbars -->
-            <RowDefinition Height="*" /> <!-- Initiative display -->
+            <RowDefinition Height="Auto" /> <!-- Initiative display -->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -28,7 +28,7 @@
         <!-- Initiative display -->
         <StackPanel Margin="10, 10, 10, 10" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Column="0" Grid.Row="2">
             <!-- Timeline -->
-                <FlipView x:Name="InitiativeFlipper" IsEnabled="False" MaxWidth="400" Height="180" BorderBrush="Black" BorderThickness="1" ItemsSource="{x:Bind CurrentSession, Mode=TwoWay}">
+                <FlipView x:Name="InitiativeFlipper" IsEnabled="False" MaxWidth="445" Height="180" BorderBrush="Black" BorderThickness="1" ItemsSource="{x:Bind CurrentSession, Mode=TwoWay}">
                     <FlipView.ItemTemplate>
                         <DataTemplate x:DataType="data:Participant">
                             <Grid>
@@ -40,12 +40,12 @@
                         </DataTemplate>
     </FlipView.ItemTemplate>
     </FlipView>
-            <StackPanel Orientation="Horizontal" BorderBrush="{StaticResource AppBarBorderThemeBrush}" BorderThickness="1">
-                <Button x:Name="PreviousParticipant" Content="Prev" Click="PreviousParticipant_Click"/>
-                <TextBlock x:Name="Previous" Margin="5,0,10,0" Width="100"/>
-                <TextBlock x:Name="Current" Margin="5,0,10,0" Width="100"/>
-                <TextBlock x:Name="Next" Margin="5,0,10,0" Width="100"/>
-                <Button x:Name="NextParticipant" Content="Next" Click="NextParticipant_Click"/>
+            <StackPanel Orientation="Horizontal" BorderBrush="{StaticResource AppBarBorderThemeBrush}" BorderThickness="1" Width="445" HorizontalAlignment="Center">
+                <Button x:Name="PreviousParticipant" Content="Prev" Click="PreviousParticipant_Click" />
+                <TextBlock x:Name="Previous" Margin="5,0,10,0" Width="100" VerticalAlignment="Center" HorizontalTextAlignment="Center"/>
+                <TextBlock x:Name="Current" Margin="5,0,10,0" Width="100" VerticalAlignment="Center" HorizontalTextAlignment="Center"/>
+                <TextBlock x:Name="Next" Margin="5,0,10,0" Width="100" VerticalAlignment="Center" HorizontalTextAlignment="Center"/>
+                <Button x:Name="NextParticipant" Content="Next" Click="NextParticipant_Click" />
             </StackPanel>
         </StackPanel>
     </Grid>
